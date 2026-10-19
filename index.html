@@ -327,6 +327,17 @@ input{
 <div class="toast" id="toast" hidden></div>
 
 <script>
+(function () {
+  function show(msg) {
+    try {
+      var d = document.createElement('div');
+      d.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#7a1020;color:#fff;font:11px/1.3 monospace;padding:6px 8px;word-break:break-all';
+      d.textContent = 'ERR: ' + msg; document.body.appendChild(d);
+    } catch (e) {}
+  }
+  window.addEventListener('error', function (e) { show((e.message || 'error') + ' @' + (e.lineno || '?') + ':' + (e.colno || '?')); });
+  window.addEventListener('unhandledrejection', function (e) { show('promise: ' + (e.reason && (e.reason.message || e.reason))); });
+})();
 const $ = id => document.getElementById(id);
 const KEY = 'pnl-trades';
 const S = { trades: [], tab: 'journal', symbol: 'ALL', month: null, day: null,
@@ -349,15 +360,4 @@ const rrtxt = n => n == null ? '\u2014' : '1:' + fixed(n, 1);
 const compact = n => { const a = Math.abs(n); return sgn(n) + (a >= 1000 ? (a / 1000).toFixed(1) + 'k' : Math.round(a)); };
 const parseDay = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
 const dayLabel = s => parseDay(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
-const monthLabel = ym => { const [y, m] = ym.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }); };
-const shiftMonth = (ym, k) => { const [y, m] = ym.split('-').map(Number); const d = new Date(y, m - 1 + k, 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); };
-
-function toast(msg) {
-  const t = $('toast'); t.textContent = msg; t.hidden = false;
-  clearTimeout(toast.h); toast.h = setTimeout(() => t.hidden = true, 2200);
-}
-
-/* ---------- trade maths ---------- */
-function calc(t) {
-  const dir = t.side === 'Sell' ? -1 : 1;
-  const risk = (t.entry != null && t.sl != null) ? Math.abs(t.
+const monthLabel = ym => { const [y, m] = ym.split('-').m
