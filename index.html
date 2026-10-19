@@ -16,8 +16,8 @@
   --bg:#000000; --surface:#0E1114; --line:#1F262D; --ink:#F2F5F7; --muted:#7F8B97;
   --win:#4FD1B5; --loss:#FF6B81; --win-rgb:79,209,181; --loss-rgb:255,107,129;
   --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:0 0 22px rgba(255,255,255,.22);
-  --glass-bg:rgba(60,66,74,.38); --glass-edge:rgba(255,255,255,.18); --glass-hi:rgba(255,255,255,.38);
-  --glass-pill:rgba(255,255,255,.20); --glass-shadow:0 10px 32px rgba(0,0,0,.55);
+  --glass-bg:rgba(255,255,255,.085); --glass-edge:rgba(255,255,255,.24); --glass-hi:rgba(255,255,255,.5);
+  --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){
@@ -25,8 +25,8 @@
     --bg:#F5F7F9; --surface:#FFFFFF; --line:#DDE3E9; --ink:#0B0F14; --muted:#66727E;
     --win:#0E8F77; --loss:#D13A55; --win-rgb:14,143,119; --loss-rgb:209,58,85;
     --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:0 6px 18px rgba(0,0,0,.18);
-    --glass-bg:rgba(255,255,255,.55); --glass-edge:rgba(255,255,255,.85); --glass-hi:rgba(255,255,255,.95);
-    --glass-pill:rgba(0,0,0,.08); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
+    --glass-bg:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.9); --glass-hi:rgba(255,255,255,1);
+    --glass-sheet:rgba(255,255,255,.72); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
     color-scheme:light;
   }
 }
@@ -122,35 +122,47 @@ textarea{
 
 /* nav (liquid glass) */
 nav{
-  position:fixed; left:14px; right:14px; bottom:calc(env(safe-area-inset-bottom) + 10px);
-  max-width:532px; margin:0 auto;
-  display:flex; padding:6px; border-radius:999px; z-index:5;
+  position:fixed; left:14px; right:14px; bottom:calc(env(safe-area-inset-bottom) + 14px);
+  max-width:532px; margin:0 auto; display:flex; padding:6px; z-index:5; border-radius:999px;
+  touch-action:none; -webkit-user-select:none; user-select:none; cursor:grab;
+}
+.navbg{
+  position:absolute; inset:0; border-radius:999px; pointer-events:none;
   background:var(--glass-bg);
-  -webkit-backdrop-filter:blur(26px) saturate(180%); backdrop-filter:blur(26px) saturate(180%);
+  -webkit-backdrop-filter:blur(12px) saturate(170%) brightness(1.06); backdrop-filter:blur(12px) saturate(170%) brightness(1.06);
   border:1px solid var(--glass-edge);
-  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 rgba(255,255,255,.06);
+  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 rgba(255,255,255,.1), inset 0 0 20px rgba(255,255,255,.05);
 }
 nav button{
   flex:1; position:relative; z-index:1; background:none; border:0; padding:8px 0 7px; display:flex; flex-direction:column; align-items:center; gap:3px;
-  color:var(--muted); font-size:11px; cursor:pointer; min-height:54px; border-radius:999px;
-  transition:color .25s, transform .2s;
+  color:var(--muted); font-size:11px; cursor:pointer; min-height:54px; border-radius:999px; transition:color .2s;
 }
-nav button:active{transform:scale(.94)}
-nav button[aria-current="page"]{color:var(--ink)}
-nav svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+nav button[aria-current="page"], nav button.hot{color:var(--ink)}
+nav.dragging button[aria-current="page"]:not(.hot){color:var(--muted)}
+nav svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; pointer-events:none}
 .pill{
-  position:absolute; top:6px; bottom:6px; left:0; width:0; z-index:0; border-radius:999px; pointer-events:none;
-  --x:0px; --sx:1; --sy:1;
-  transform:translateX(var(--x)) scale(var(--sx),var(--sy));
-  background:linear-gradient(180deg,rgba(255,255,255,.10),var(--glass-pill));
-  -webkit-backdrop-filter:blur(8px) brightness(1.35) saturate(160%); backdrop-filter:blur(8px) brightness(1.35) saturate(160%);
-  border:1px solid var(--glass-hi);
-  box-shadow:inset 0 1px 1px var(--glass-hi), inset 0 -2px 4px rgba(255,255,255,.12),
-             inset 0 0 14px rgba(255,255,255,.08), 0 6px 18px rgba(0,0,0,.35);
-  opacity:0;
+  position:absolute; top:4px; bottom:4px; left:0; width:0; z-index:0; border-radius:999px; pointer-events:none;
+  will-change:transform; opacity:0; transition:opacity .25s, box-shadow .25s;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.03) 48%,rgba(255,255,255,.10));
+  -webkit-backdrop-filter:blur(2px) saturate(190%) brightness(1.22); backdrop-filter:blur(2px) saturate(190%) brightness(1.22);
+  border:1px solid rgba(255,255,255,.55);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.6), inset 0 -2px 5px rgba(255,255,255,.28), inset 0 0 18px rgba(255,255,255,.12), 0 8px 22px rgba(0,0,0,.38);
 }
-.pill.ready{opacity:1; transition:transform .42s cubic-bezier(.34,1.45,.5,1), width .42s cubic-bezier(.34,1.45,.5,1)}
-.pill.stretch{--sx:1.07; --sy:1.1}
+html.lens .pill{
+  -webkit-backdrop-filter:url(#lens) blur(1px) saturate(190%) brightness(1.2); backdrop-filter:url(#lens) blur(1px) saturate(190%) brightness(1.2);
+}
+.pill.on{opacity:1}
+.pill.grab{box-shadow:inset 0 2px 3px rgba(255,255,255,.7), inset 0 -2px 6px rgba(255,255,255,.35), inset 0 0 22px rgba(255,255,255,.16), 0 14px 30px rgba(0,0,0,.45)}
+.pill::before,.pill::after{
+  content:""; position:absolute; left:20%; right:20%; height:5px; border-radius:50%; filter:blur(1.3px); opacity:.85;
+}
+.pill::before{top:1px; background:linear-gradient(90deg,transparent,rgba(70,110,255,.9),rgba(255,255,255,.75) 50%,rgba(255,150,70,.85),transparent)}
+.pill::after{bottom:1px; background:linear-gradient(90deg,transparent,rgba(255,150,70,.85),rgba(255,255,255,.75) 50%,rgba(70,110,255,.9),transparent)}
+.ring{
+  position:absolute; top:4px; bottom:4px; border-radius:999px; pointer-events:none; z-index:0;
+  border:1.5px solid rgba(255,255,255,.6); animation:ring .8s ease-out forwards;
+}
+@keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.3,1.25);opacity:0}}
 .fab{
   position:fixed; right:18px; bottom:calc(env(safe-area-inset-bottom) + 86px); width:58px; height:58px; border-radius:50%;
   border:1px solid var(--glass-edge); color:var(--ink); cursor:pointer; z-index:6;
@@ -166,7 +178,7 @@ nav svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.
 .sheet{position:fixed; inset:0; z-index:20; display:flex; align-items:flex-end; justify-content:center}
 .scrim{position:absolute; inset:0; background:rgba(0,0,0,.5); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); opacity:0; transition:opacity .2s}
 .panelSheet{
-  position:relative; width:100%; max-width:560px; max-height:94vh; overflow:auto; background:var(--glass-bg);
+  position:relative; width:100%; max-width:560px; max-height:94vh; overflow:auto; background:var(--glass-sheet);
   -webkit-backdrop-filter:blur(30px) saturate(180%); backdrop-filter:blur(30px) saturate(180%);
   border:1px solid var(--glass-edge); border-bottom:0; box-shadow:inset 0 1px 0 var(--glass-hi);
   border-radius:26px 26px 0 0; padding:18px 18px calc(env(safe-area-inset-bottom) + 22px);
@@ -192,7 +204,7 @@ input{
 .calc b{color:var(--ink); font-weight:600}
 .toast{
   position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom) + 150px); transform:translateX(-50%);
-  background:var(--glass-bg); color:var(--ink); border:1px solid var(--glass-edge); -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%); box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi); padding:10px 16px; border-radius:999px; font-size:13px; z-index:40;
+  background:var(--glass-sheet); color:var(--ink); border:1px solid var(--glass-edge); -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%); box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi); padding:10px 16px; border-radius:999px; font-size:13px; z-index:40;
 }
 :focus-visible{outline:2px solid var(--ink); outline-offset:2px}
 @media (prefers-reduced-motion: reduce){
@@ -256,7 +268,15 @@ input{
 
 <button class="fab" id="fab" aria-label="Add trade"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="lens" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feImage id="lensImg" x="0" y="0" width="100" height="60" preserveAspectRatio="none" result="map"/>
+    <feDisplacementMap in="SourceGraphic" in2="map" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
 <nav aria-label="Main">
+  <span class="navbg" aria-hidden="true"></span>
   <span class="pill" id="pill" aria-hidden="true"></span>
   <button data-act="tab" data-v="journal" aria-current="page">
     <svg viewBox="0 0 24 24"><path d="M3 15c2.5 0 3-5 5.5-5S11 17 14 17s2.5-9 7-9"/></svg>Journal
@@ -340,45 +360,4 @@ function toast(msg) {
 /* ---------- trade maths ---------- */
 function calc(t) {
   const dir = t.side === 'Sell' ? -1 : 1;
-  const risk = (t.entry != null && t.sl != null) ? Math.abs(t.entry - t.sl) : null;
-  const reward = (t.entry != null && t.tp != null) ? Math.abs(t.tp - t.entry) : null;
-  const rr = (risk > 0 && reward != null) ? reward / risk : null;
-  const p = (t.entry != null && t.exit != null) ? (t.exit - t.entry) * dir : null;
-  const r = (p != null && risk > 0) ? p / risk : null;
-  return { risk, reward, rr, pts: p, r };
-}
-
-function stats(tr) {
-  const w = tr.filter(t => t.pnl > 0), l = tr.filter(t => t.pnl < 0);
-  const gw = sum(w.map(t => t.pnl)), gl = Math.abs(sum(l.map(t => t.pnl)));
-  let cum = 0, pk = 0, dd = 0;
-  tr.forEach(t => { cum += t.pnl; pk = Math.max(pk, cum); dd = Math.max(dd, pk - cum); });
-  const decided = w.length + l.length;
-  const cs = tr.map(calc);
-  const net = sum(tr.map(t => t.pnl));
-  return {
-    n: tr.length, net,
-    winRate: decided ? w.length / decided : null,
-    pf: gl ? gw / gl : null,
-    exp: tr.length ? net / tr.length : null,
-    avgW: w.length ? gw / w.length : null,
-    avgL: l.length ? -gl / l.length : null,
-    dd,
-    avgRR: avg(cs.map(c => c.rr).filter(v => v != null)),
-    avgR: avg(cs.map(c => c.r).filter(v => v != null))
-  };
-}
-
-/* ---------- storage ---------- */
-async function load() {
-  try { const v = window.localStorage.getItem(KEY); return v ? JSON.parse(v) : []; } catch (e) {}
-  try { if (window.storage) { const r = await window.storage.get(KEY); if (r && r.value) return JSON.parse(r.value); } } catch (e) {}
-  return [];
-}
-async function save() {
-  const data = JSON.stringify(S.trades);
-  try { window.localStorage.setItem(KEY, data); return; } catch (e) {}
-  try { if (window.storage) await window.storage.set(KEY, data); } catch (e) { console.error(e); }
-}
-
-/* ---------- v
+  const risk = (t.entry != null && t.sl != null) ? Math.abs(t.
