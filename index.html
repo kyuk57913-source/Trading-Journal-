@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2B4C7E">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="P&L Journal">
+<title>P&L Journal</title>
+<style>
+:root{
+  --bg:#EDF0F4; --surface:#FFFFFF; --ink:#14202B; --muted:#5B6B7A; --line:#D3DAE2;
+  --win:#0B7A68; --loss:#C0314F; --accent:#2B4C7E; --accent-ink:#FFFFFF;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#10171E; --surface:#18222C; --ink:#E7EDF2; --muted:#93A3B2; --line:#2A3743;
+    --win:#3CC4A8; --loss:#F06A88; --accent:#8AB0E6; --accent-ink:#10171E;
+    color-scheme:dark;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-variant-numeric:tabular-nums; line-height:1.45;
+}
+main{max-width:640px; margin:0 auto; padding:20px 16px 48px}
+h1{font-size:15px; font-weight:600; margin:0 0 14px; color:var(--muted); letter-spacing:.01em}
+h2{font-size:15px; font-weight:600; margin:0 0 12px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px}
+.hero{padding:18px 16px 8px}
+.total{font-size:34px; font-weight:700; letter-spacing:-.02em; line-height:1.1}
+.sub{color:var(--muted); font-size:13px; margin-top:2px}
+.win{color:var(--win)} .loss{color:var(--loss)}
+svg.curve{width:100%; height:auto; display:block; margin-top:10px}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin:0 0 14px}
+.chip{
+  border:1px solid var(--line); background:transparent; color:var(--ink);
+  padding:6px 12px; border-radius:999px; font:inherit; font-size:13px; cursor:pointer;
+}
+.chip[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+dl.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:14px 10px; margin:0}
+dl.stats div{min-width:0}
+dl.stats dt{font-size:12px; color:var(--muted)}
+dl.stats dd{margin:2px 0 0; font-size:17px; font-weight:600}
+form{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+label{display:flex; flex-direction:column; gap:4px; font-size:13px; color:var(--muted)}
+label.wide,.wide{grid-column:1 / -1}
+.three{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+input,select{
+  font:inherit; font-size:16px; color:var(--ink); background:var(--bg);
+  border:1px solid var(--line); border-radius:8px; padding:10px; width:100%; min-width:0;
+}
+.seg{display:grid; grid-template-columns:1fr 1fr; gap:6px}
+.seg button{
+  font:inherit; padding:10px; border-radius:8px; border:1px solid var(--line);
+  background:var(--bg); color:var(--ink); cursor:pointer;
+}
+.seg button[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.primary{
+  font:inherit; font-weight:600; padding:12px; border-radius:8px; border:0; cursor:pointer;
+  background:var(--accent); color:var(--accent-ink);
+}
+.link{background:none; border:0; color:var(--accent); font:inherit; font-size:13px; cursor:pointer; padding:0; text-decoration:underline}
+.day{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin:16px 0 6px}
+.day:first-of-type{margin-top:0}
+.row{display:grid; grid-template-columns:1fr auto auto; gap:10px; align-items:center; padding:10px 0; border-top:1px solid var(--line)}
+.row .name{font-weight:600}
+.row .meta{font-size:12px; color:var(--muted); overflow-wrap:anywhere}
+.row .pnl{font-weight:600; text-align:right}
+.del{border:1px solid var(--line); background:transparent; color:var(--muted); border-radius:8px; padding:6px 10px; font:inherit; font-size:12px; cursor:pointer}
+.del.confirm{border-color:var(--loss); color:var(--loss)}
+.empty{color:var(--muted); font-size:14px; margin:0}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+</style>
+</head>
+<body>
+<main>
+  <h1>P&amp;L Journal</h1>
+
+  <section class="card hero" aria-label="Equity curve">
+    <div id="total" class="total">$0.00</div>
+    <div id="totalSub" class="sub">No trades yet</div>
+    <div id="chart"></div>
+  </section>
+
+  <div id="chips" class="chips" role="group" aria-label="Filter by symbol"></div>
+
+  <section class="card" aria-label="Statistics">
+    <dl class="stats" id="stats"></dl>
+  </section>
+
+  <section class="card" aria-label="Add trade">
+    <h2>Add trade</h2>
+    <form id="form">
+      <label>Date<input type="date" id="date" required></label>
+      <label>Symbol<input id="symbol" list="symbols" placeholder="XAUUSD" autocapitalize="characters" required>
+        <datalist id="symbols"><option value="XAUUSD"><option value="NAS100"></datalist>
+      </label>
+      <div class="wide">
+        <div class="seg" role="group" aria-label="Side">
+          <button type="button" id="buy" aria-pressed="true">Buy</button>
+          <button type="button" id="sell" aria-pressed="false">Sell</button>
+        </div>
+      </div>
+      <div class="wide three">
+        <label>Entry<input type="number" id="entry" step="any" inputmode="decimal" placeholder="2650.50"></label>
+        <label>SL<input type="number" id="sl" step="any" inputmode="decimal" placeholder="2645.00"></label>
+        <label>TP<input type="number" id="tp" step="any" inputmode="decimal" placeholder="2665.00"></label>
+      </div>
+      <label class="wide">Result ($)<input type="number" id="pnl" step="0.01" inputmode="decimal" placeholder="-35.50 or 120" required></label>
+      <label class="wide">Note<input id="note" placeholder="Setup, mistake, anything worth remembering"></label>
+      <button class="primary wide" type="submit">Save trade</button>
+    </form>
+  </section>
+
+  <section class="card" aria-label="Trades">
+    <h2>Trades</h2>
+    <div id="list"></div>
+  </section>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const state = { trades: [], filter: 'ALL', side: 'Buy', pendingDelete: null };
+
+const money = n => (n < 0 ? '\u2212' : n > 0 ? '+' : '') + '$' +
+  Math.abs(n).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+const cls = n => n > 0 ? 'win' : n < 0 ? 'loss' : '';
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = () => new Date().toISOString().slice(0,10);
+const num = v => v === '' || Number.isNaN(parseFloat(v)) ? null : parseFloat(v);
+
+const KEY = 'pnl-trades';
+async function load(){
+  try{
+    const v = window.localStorage.getItem(KEY);
+    if(v) return JSON.parse(v);
+    return [];
+  }catch(e){}
+  // localStorage unavailable (e.g. inside Claude preview): fall back to Claude storage
+  try{
+    if(window.storage){
+      const r = await window.storage.get(KEY);
+      if(r && r.value) return JSON.parse(r.value);
+    }
+  }catch(e){}
+  return [];
+}
+async function save(){
+  const data = JSON.stringify(state.trades);
+  try{
+    window.localStorage.setItem(KEY, data);
+    return;
+  }catch(e){}
+  try{
+    if(window.storage) await window.storage.set(KEY, data);
+  }catch(e){ console.error('Could not save', e); }
+}
+
+function visible(){
+  const t = state.filter === 'ALL' ? state.trades : state.trades.filter(x => x.symbol === state.filter);
+  return t.slice().sort((a,b) => a.date.localeCompare(b.date) || a.id - b.id);
+}
+
+function renderChart(trades){
+  const el = $('chart');
+  if(!trades.length){ el.innerHTML = ''; return; }
+  const pts = [0]; trades.forEach(t => pts.push(pts[pts.length-1] + t.pnl));
+  const W = 600, H = 200, pad = 12;
+  const lo = Math.min(0, ...pts), hi = Math.max(0, ...pts);
+  const span = (hi - lo) || 1;
+  const x = i => pad + (W - 2*pad) * (i / (pts.length - 1 || 1));
+  const y = v => pad + (H - 2*pad) * (1 - (v - lo) / span);
+  const line = pts.map((v,i) => (i ? 'L' : 'M') + x(i).toFixed(1) + ' ' + y(v).toFixed(1)).join(' ');
+  const area = line + ` L${x(pts.length-1).toFixed(1)} ${y(0).toFixed(1)} L${x(0).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  const color = pts[pts.length-1] >= 0 ? 'var(--win)' : 'var(--loss)';
+  el.innerHTML = `<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative profit and loss over ${trades.length} trades">
+    <line x1="${pad}" x2="${W-pad}" y1="${y(0)}" y2="${y(0)}" stroke="var(--line)" stroke-dasharray="4 4"/>
+    <path d="${area}" fill="${color}" opacity="0.12"/>
+    <path d="${line}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function renderStats(trades){
+  const wins = trades.filter(t => t.pnl > 0), losses = trades.filter(t => t.pnl < 0);
+  const sum = a => a.reduce((s,t) => s + t.pnl, 0);
+  const gw = sum(wins), gl = Math.abs(sum(losses));
+  let cum = 0, peak = 0, dd = 0;
+  trades.forEach(t => { cum += t.pnl; peak = Math.max(peak, cum); dd = Math.max(dd, peak - cum); });
+  const decided = wins.length + losses.length;
+  const items = [
+    ['Trades', trades.length, ''],
+    ['Win rate', decided ? Math.round(100 * wins.length / decided) + '%' : '\u2014', ''],
+    ['Profit factor', gl ? (gw / gl).toFixed(2) : '\u2014', ''],
+    ['Avg win', wins.length ? money(gw / wins.length) : '\u2014', 'win'],
+    ['Avg loss', losses.length ? money(-gl / losses.length) : '\u2014', 'loss'],
+    ['Max drawdown', dd ? money(-dd) : '\u2014', dd ? 'loss' : ''],
+    ['Best', trades.length ? money(Math.max(...trades.map(t => t.pnl))) : '\u2014', ''],
+    ['Worst', trades.length ? money(Math.min(...trades.map(t => t.pnl))) : '\u2014', ''],
+  ];
+  $('stats').innerHTML = items.map(([k,v,c]) => `<div><dt>${k}</dt><dd class="${c}">${v}</dd></div>`).join('');
+}
+
+function renderChips(){
+  const syms = [...new Set(state.trades.map(t => t.symbol))].sort();
+  if(syms.length < 2){ $('chips').innerHTML = ''; if(state.filter !== 'ALL' && !syms.includes(state.filter)) state.filter = 'ALL'; return; }
+  if(state.filter !== 'ALL' && !syms.includes(state.filter)) state.filter = 'ALL';
+  $('chips').innerHTML = ['ALL', ...syms].map(s =>
+    `<button class="chip" data-s="${esc(s)}" aria-pressed="${state.filter === s}">${s === 'ALL' ? 'All' : esc(s)}</button>`).join('');
+}
+
+function renderList(trades){
+  if(!trades.length){
+    $('list').innerHTML = `<p class="empty">Your trades will show here. Add your first one above, or <button class="link" id="sample">load sample trades</button> to see how it looks.</p>`;
+    return;
+  }
+  const byDay = {};
+  trades.slice().reverse().forEach(t => (byDay[t.date] = byDay[t.date] || []).push(t));
+  $('list').innerHTML = Object.keys(byDay).sort().reverse().map(d => {
+    const dayTotal = byDay[d].reduce((s,t) => s + t.pnl, 0);
+    const rows = byDay[d].map(t => `
+      <div class="row">
+        <div>
+          <div class="name">${esc(t.symbol)} \u00b7 ${t.side}</div>
+          ${(t.entry != null || t.sl != null || t.tp != null) ? `<div class="meta">${[['Entry', t.entry], ['SL', t.sl], ['TP', t.tp]].filter(p => p[1] != null).map(p => p[0] + ' ' + p[1]).join(' \u00b7 ')}</div>` : ''}
+          ${t.note ? `<div class="meta">${esc(t.note)}</div>` : ''}
+        </div>
+        <div class="pnl ${cls(t.pnl)}">${money(t.pnl)}</div>
+        <button class="del ${state.pendingDelete === t.id ? 'confirm' : ''}" data-id="${t.id}">${state.pendingDelete === t.id ? 'Confirm' : 'Delete'}</button>
+      </div>`).join('');
+    return `<div class="day"><span>${d}</span><span class="${cls(dayTotal)}">${money(dayTotal)}</span></div>${rows}`;
+  }).join('');
+}
+
+function render(){
+  renderChips();
+  const trades = visible();
+  const total = trades.reduce((s,t) => s + t.pnl, 0);
+  $('total').textContent = money(total);
+  $('total').className = 'total ' + cls(total);
+  $('totalSub').textContent = trades.length
+    ? `${trades.length} trade${trades.length === 1 ? '' : 's'}${state.filter === 'ALL' ? '' : ' on ' + state.filter}`
+    : 'No trades yet';
+  renderChart(trades);
+  renderStats(trades);
+  renderList(trades);
+}
+
+function setSide(s){
+  state.side = s;
+  $('buy').setAttribute('aria-pressed', s === 'Buy');
+  $('sell').setAttribute('aria-pressed', s === 'Sell');
+}
+
+$('buy').onclick = () => setSide('Buy');
+$('sell').onclick = () => setSide('Sell');
+
+$('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const pnl = parseFloat($('pnl').value);
+  if(Number.isNaN(pnl)) return;
+  state.trades.push({
+    id: Date.now(),
+    date: $('date').value || today(),
+    symbol: $('symbol').value.trim().toUpperCase(),
+    side: state.side,
+    entry: num($('entry').value),
+    sl: num($('sl').value),
+    tp: num($('tp').value),
+    pnl,
+    note: $('note').value.trim()
+  });
+  ['pnl','entry','sl','tp','note'].forEach(id => $(id).value = '');
+  render();
+  await save();
+});
+
+document.addEventListener('click', async e => {
+  const chip = e.target.closest('.chip');
+  if(chip){ state.filter = chip.dataset.s; render(); return; }
+  const del = e.target.closest('.del');
+  if(del){
+    const id = Number(del.dataset.id);
+    if(state.pendingDelete === id){
+      state.trades = state.trades.filter(t => t.id !== id);
+      state.pendingDelete = null; render(); await save();
+    } else { state.pendingDelete = id; render(); }
+    return;
+  }
+  if(e.target.id === 'sample'){
+    const d = n => { const x = new Date(); x.setDate(x.getDate() - n); return x.toISOString().slice(0,10); };
+    const s = [
+      [6,'XAUUSD','Buy',2650.5,2645.0,2665.0,84.20,'Breakout retest'],
+      [5,'NAS100','Sell',20480,20520,20400,-46.00,'Entered too early'],
+      [4,'XAUUSD','Sell',2688.0,2694.0,2670.0,132.60,''],
+      [3,'NAS100','Buy',20350,20310,20450,61.30,'Followed plan'],
+      [2,'XAUUSD','Buy',2672.0,2666.0,2690.0,-72.40,'Stopped out on news'],
+      [1,'NAS100','Buy',20410,20370,20520,148.90,'']
+    ];
+    state.trades = s.map((r,i) => ({id: Date.now()+i, date: d(r[0]), symbol: r[1], side: r[2], entry: r[3], sl: r[4], tp: r[5], pnl: r[6], note: r[7]}));
+    render(); await save();
+  }
+});
+
+(async () => {
+  $('date').value = today();
+  state.trades = await load();
+  render();
+})();
+</script>
+</body>
+</html>
