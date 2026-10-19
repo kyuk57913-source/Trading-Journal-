@@ -10,6 +10,9 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
 <title>PnL Journal</title>
 <style>
 :root{
@@ -17,7 +20,13 @@
   --win:#4FD1B5; --loss:#FF6B81; --win-rgb:79,209,181; --loss-rgb:255,107,129;
   --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:0 0 22px rgba(255,255,255,.22);
   --glass-bg:rgba(255,255,255,.085); --glass-edge:rgba(255,255,255,.24); --glass-hi:rgba(255,255,255,.5);
-  --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
+  --glass-tint:rgba(70,230,140,.9); --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
+  --tint:70,230,140; --tint-soft:170,255,210;
+  --nav-bg:rgba(255,255,255,.042); --nav-edge:rgba(255,255,255,.15); --nav-hi:rgba(255,255,255,.38);
+  --nav-shadow:0 8px 26px rgba(0,0,0,.34);
+  --sheet-bg:rgba(26,30,36,.31); --sheet-shadow:0 -10px 34px rgba(0,0,0,.28);
+  --dp-bg:rgba(18,22,27,.5);
+  --field-bg:rgba(255,255,255,.04); --field-line:rgba(255,255,255,.13); --field-hi:rgba(255,255,255,.12); --field-on:rgba(255,255,255,.09);
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){
@@ -27,6 +36,12 @@
     --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:0 6px 18px rgba(0,0,0,.18);
     --glass-bg:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.9); --glass-hi:rgba(255,255,255,1);
     --glass-sheet:rgba(255,255,255,.72); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
+    --tint:24,190,110; --tint-soft:120,225,170;
+    --nav-bg:rgba(255,255,255,.19); --nav-edge:rgba(255,255,255,.55); --nav-hi:rgba(255,255,255,.85);
+    --nav-shadow:0 8px 24px rgba(0,0,0,.12);
+    --sheet-bg:rgba(255,255,255,.36); --sheet-shadow:0 -8px 30px rgba(0,0,0,.1);
+    --dp-bg:rgba(255,255,255,.62);
+    --field-bg:rgba(255,255,255,.32); --field-line:rgba(11,15,20,.1); --field-hi:rgba(255,255,255,.9); --field-on:rgba(255,255,255,.6);
     color-scheme:light;
   }
 }
@@ -34,7 +49,7 @@
 [hidden]{display:none !important}
 html,body{margin:0; background:var(--bg); color:var(--ink)}
 body{
-  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-family:"Cutive Mono","Courier New",Courier,ui-monospace,Menlo,Consolas,monospace;
   font-variant-numeric:tabular-nums; line-height:1.4; font-size:15px;
 }
 button{font:inherit; color:inherit}
@@ -48,7 +63,7 @@ h2{font-size:16px; font-weight:600; margin:28px 0 4px}
 .win{color:var(--win)} .loss{color:var(--loss)} .muted{color:var(--muted)}
 
 /* hero */
-.big{font-size:48px; font-weight:300; letter-spacing:-.035em; line-height:1.05}
+.big{font-size:44px; font-weight:300; letter-spacing:-.035em; line-height:1.05}
 .sub{color:var(--muted); font-size:13px; margin-top:4px}
 .curve{margin:14px -18px 0}
 .curve svg{width:100%; height:auto; display:block}
@@ -77,9 +92,9 @@ h2{font-size:16px; font-weight:600; margin:28px 0 4px}
   background:none; border:0; border-top:1px solid var(--line); padding:12px 0; cursor:pointer;
 }
 .trade .nm{font-weight:600}
-.trade .mt{font-size:12px; color:var(--muted); overflow-wrap:anywhere}
+.trade .mt{grid-column:1 / -1; font-size:12px; color:var(--muted); overflow-wrap:anywhere}
 .trade .pl{text-align:right; font-weight:600}
-.trade .ps{text-align:right; font-size:12px; color:var(--muted)}
+.trade .ps{grid-column:1 / -1; text-align:left; font-size:12px; color:var(--muted)}
 .trade .nt{grid-column:1 / -1; font-size:12px; color:var(--muted); font-style:italic}
 .empty{color:var(--muted); margin:18px 0 0}
 .link{background:none; border:0; padding:0; color:var(--ink); text-decoration:underline; cursor:pointer}
@@ -100,7 +115,7 @@ h2{font-size:16px; font-weight:600; margin:28px 0 4px}
 .cell.sel{outline:2px solid var(--ink); outline-offset:-2px}
 .cell .d{color:var(--muted)}
 .cell.has .d{color:var(--ink); opacity:.75}
-.cell .a{font-weight:600; font-size:11px; align-self:flex-end}
+.cell .a{font-weight:600; font-size:10px; align-self:flex-end}
 .srow{display:grid; grid-template-columns:1fr auto auto; gap:14px; padding:11px 0; border-top:1px solid var(--line); align-items:center; width:100%; background:none; border-left:0; border-right:0; border-bottom:0; text-align:left}
 .srow .s{font-weight:600}
 .srow .n{font-size:12px; color:var(--muted)}
@@ -128,10 +143,10 @@ nav{
 }
 .navbg{
   position:absolute; inset:0; border-radius:999px; pointer-events:none;
-  background:var(--glass-bg);
-  -webkit-backdrop-filter:blur(12px) saturate(170%) brightness(1.06); backdrop-filter:blur(12px) saturate(170%) brightness(1.06);
-  border:1px solid var(--glass-edge);
-  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi), inset 0 -1px 0 rgba(255,255,255,.1), inset 0 0 20px rgba(255,255,255,.05);
+  background:var(--nav-bg);
+  -webkit-backdrop-filter:blur(7px) saturate(180%) brightness(1.03); backdrop-filter:blur(7px) saturate(180%) brightness(1.03);
+  border:1px solid var(--nav-edge);
+  box-shadow:var(--nav-shadow), inset 0 1px 0 var(--nav-hi), inset 0 -1px 0 rgba(255,255,255,.06), inset 0 0 18px rgba(255,255,255,.025);
 }
 nav button{
   flex:1; position:relative; z-index:1; background:none; border:0; padding:8px 0 7px; display:flex; flex-direction:column; align-items:center; gap:3px;
@@ -141,34 +156,43 @@ nav button[aria-current="page"], nav button.hot{color:var(--ink)}
 nav.dragging button[aria-current="page"]:not(.hot){color:var(--muted)}
 nav svg{width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; pointer-events:none}
 .pill{
-  position:absolute; top:4px; bottom:4px; left:0; width:0; z-index:0; border-radius:999px; pointer-events:none;
+  position:absolute; top:8px; bottom:8px; left:0; width:0; z-index:0; border-radius:999px; pointer-events:none;
   will-change:transform; opacity:0; transition:opacity .25s, box-shadow .25s;
-  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(255,255,255,.03) 48%,rgba(255,255,255,.10));
-  -webkit-backdrop-filter:blur(2px) saturate(190%) brightness(1.22); backdrop-filter:blur(2px) saturate(190%) brightness(1.22);
-  border:1px solid rgba(255,255,255,.55);
-  box-shadow:inset 0 2px 3px rgba(255,255,255,.6), inset 0 -2px 5px rgba(255,255,255,.28), inset 0 0 18px rgba(255,255,255,.12), 0 8px 22px rgba(0,0,0,.38);
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0) 50%,rgba(255,255,255,.02));
+  -webkit-backdrop-filter:blur(.4px) saturate(150%) brightness(1.04); backdrop-filter:blur(.4px) saturate(150%) brightness(1.04);
+  border:1px solid rgba(var(--tint-soft),.3);
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--tint),.22),
+    inset 0 0 9px 1px rgba(var(--tint),.34),
+    inset 0 0 22px rgba(var(--tint),.08),
+    inset 0 1px 1px rgba(255,255,255,.2),
+    0 0 12px rgba(var(--tint),.14),
+    0 4px 12px rgba(0,0,0,.16);
 }
 html.lens .pill{
-  -webkit-backdrop-filter:url(#lens) blur(1px) saturate(190%) brightness(1.2); backdrop-filter:url(#lens) blur(1px) saturate(190%) brightness(1.2);
+  -webkit-backdrop-filter:url(#lens) blur(.4px) saturate(150%) brightness(1.03); backdrop-filter:url(#lens) blur(.4px) saturate(150%) brightness(1.03);
 }
 .pill.on{opacity:1}
-.pill.grab{box-shadow:inset 0 2px 3px rgba(255,255,255,.7), inset 0 -2px 6px rgba(255,255,255,.35), inset 0 0 22px rgba(255,255,255,.16), 0 14px 30px rgba(0,0,0,.45)}
-.pill::before,.pill::after{
-  content:""; position:absolute; left:20%; right:20%; height:5px; border-radius:50%; filter:blur(1.3px); opacity:.85;
+.pill.grab{
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--tint),.3),
+    inset 0 0 11px 1px rgba(var(--tint),.42),
+    inset 0 0 26px rgba(var(--tint),.11),
+    inset 0 1px 1px rgba(255,255,255,.26),
+    0 0 16px rgba(var(--tint),.2),
+    0 7px 18px rgba(0,0,0,.24);
 }
-.pill::before{top:1px; background:linear-gradient(90deg,transparent,rgba(70,110,255,.9),rgba(255,255,255,.75) 50%,rgba(255,150,70,.85),transparent)}
-.pill::after{bottom:1px; background:linear-gradient(90deg,transparent,rgba(255,150,70,.85),rgba(255,255,255,.75) 50%,rgba(70,110,255,.9),transparent)}
 .ring{
-  position:absolute; top:4px; bottom:4px; border-radius:999px; pointer-events:none; z-index:0;
-  border:1.5px solid rgba(255,255,255,.6); animation:ring .8s ease-out forwards;
+  position:absolute; top:8px; bottom:8px; border-radius:999px; pointer-events:none; z-index:0;
+  border:1.5px solid rgba(var(--tint-soft),.5); animation:ring .8s ease-out forwards;
 }
 @keyframes ring{from{transform:scale(1);opacity:.7}to{transform:scale(1.3,1.25);opacity:0}}
 .fab{
   position:fixed; right:18px; bottom:calc(env(safe-area-inset-bottom) + 86px); width:58px; height:58px; border-radius:50%;
-  border:1px solid var(--glass-edge); color:var(--ink); cursor:pointer; z-index:6;
-  background:var(--glass-bg);
-  -webkit-backdrop-filter:blur(22px) saturate(180%); backdrop-filter:blur(22px) saturate(180%);
-  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  border:1px solid var(--nav-edge); color:var(--ink); cursor:pointer; z-index:6;
+  background:var(--nav-bg);
+  -webkit-backdrop-filter:blur(7px) saturate(180%) brightness(1.03); backdrop-filter:blur(7px) saturate(180%) brightness(1.03);
+  box-shadow:var(--nav-shadow), inset 0 1px 0 var(--nav-hi), inset 0 -1px 0 rgba(255,255,255,.06), inset 0 0 18px rgba(255,255,255,.025);
   display:flex; align-items:center; justify-content:center; transition:transform .2s;
 }
 .fab:active{transform:scale(.92)}
@@ -176,16 +200,66 @@ html.lens .pill{
 
 /* sheet */
 .sheet{position:fixed; inset:0; z-index:20; display:flex; align-items:flex-end; justify-content:center}
-.scrim{position:absolute; inset:0; background:rgba(0,0,0,.5); -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); opacity:0; transition:opacity .2s}
+.scrim{position:absolute; inset:0; background:rgba(0,0,0,.28); -webkit-backdrop-filter:blur(3px); backdrop-filter:blur(3px); opacity:0; transition:opacity .2s}
 .panelSheet{
-  position:relative; width:100%; max-width:560px; max-height:94vh; overflow:auto; background:var(--glass-sheet);
-  -webkit-backdrop-filter:blur(30px) saturate(180%); backdrop-filter:blur(30px) saturate(180%);
-  border:1px solid var(--glass-edge); border-bottom:0; box-shadow:inset 0 1px 0 var(--glass-hi);
+  position:relative; width:100%; max-width:560px; max-height:94vh; overflow:auto; background:var(--sheet-bg);
+  -webkit-backdrop-filter:blur(14px) saturate(180%) brightness(1.03); backdrop-filter:blur(14px) saturate(180%) brightness(1.03);
+  border:1px solid var(--nav-edge); border-bottom:0;
+  box-shadow:var(--sheet-shadow), inset 0 1px 0 var(--nav-hi), inset 0 0 24px rgba(255,255,255,.025);
   border-radius:26px 26px 0 0; padding:18px 18px calc(env(safe-area-inset-bottom) + 22px);
   transform:translateY(24px); opacity:0; transition:transform .22s ease-out, opacity .22s;
 }
 .sheet.open .scrim{opacity:1}
 .sheet.open .panelSheet{transform:none; opacity:1}
+/* date field + calendar */
+.datebtn{
+  display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; min-height:48px; padding:12px;
+  border-radius:10px; font-size:16px; color:var(--ink); text-align:left; cursor:pointer;
+}
+.panelSheet .datebtn{
+  background:var(--field-bg); border:1px solid var(--field-line);
+  box-shadow:inset 0 1px 0 var(--field-hi), inset 0 0 12px rgba(255,255,255,.02);
+}
+.datebtn svg{width:19px; height:19px; flex:none; fill:none; stroke:rgb(var(--tint)); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.dp{position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center; padding:18px}
+.dpscrim{position:absolute; inset:0; background:rgba(0,0,0,.3); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); opacity:0; transition:opacity .2s}
+.dpcard{
+  position:relative; width:100%; max-width:340px; max-height:calc(100vh - 36px); overflow:auto; padding:14px 14px 12px; border-radius:26px;
+  background:var(--dp-bg); -webkit-backdrop-filter:blur(16px) saturate(180%) brightness(1.03); backdrop-filter:blur(16px) saturate(180%) brightness(1.03);
+  border:1px solid rgba(var(--tint-soft),.26);
+  box-shadow:inset 0 0 0 1px rgba(var(--tint),.14), inset 0 0 16px 1px rgba(var(--tint),.18), inset 0 1px 1px var(--nav-hi), 0 0 18px rgba(var(--tint),.1), 0 18px 44px rgba(0,0,0,.4);
+  transform:translateY(10px) scale(.97); opacity:0; transition:transform .22s ease-out, opacity .22s;
+}
+.dp.open .dpscrim{opacity:1}
+.dp.open .dpcard{transform:none; opacity:1}
+.dphead{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px}
+.dpttl{font-size:17px}
+.dpnav{
+  width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0;
+  background:var(--field-bg); border:1px solid var(--field-line); box-shadow:inset 0 1px 0 var(--field-hi); color:var(--ink);
+}
+.dpnav svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round}
+.dpgrid{display:grid; grid-template-columns:repeat(7,1fr); gap:3px 2px}
+.dpdow{font-size:11px; color:var(--muted); text-align:center; padding:8px 0 4px}
+.dpday{
+  position:relative; aspect-ratio:1; border-radius:50%; border:1px solid transparent; background:transparent; padding:0;
+  font-size:15px; color:var(--ink); cursor:pointer; display:flex; align-items:center; justify-content:center;
+  transition:background .15s, box-shadow .15s;
+}
+.dpday:active{background:var(--field-on)}
+.dpday.tod{border-color:rgba(var(--tint),.5)}
+.dpday.sel{
+  background:linear-gradient(180deg,rgba(var(--tint),.34),rgba(var(--tint),.14)); border-color:rgba(var(--tint-soft),.45);
+  box-shadow:inset 0 0 0 1px rgba(var(--tint),.2), inset 0 0 9px 1px rgba(var(--tint),.32), inset 0 1px 1px var(--field-hi), 0 0 12px rgba(var(--tint),.16);
+}
+.dpday i{position:absolute; bottom:5px; left:50%; width:4px; height:4px; margin-left:-2px; border-radius:50%}
+.dpday i.w{background:var(--win)} .dpday i.l{background:var(--loss)} .dpday i.z{background:var(--muted)}
+.dpfoot{display:flex; gap:10px; margin-top:10px}
+.dpbtn{
+  flex:1; min-height:44px; border-radius:12px; cursor:pointer; font-weight:600; color:var(--ink);
+  background:var(--field-bg); border:1px solid var(--field-line); box-shadow:inset 0 1px 0 var(--field-hi);
+}
+@media (prefers-reduced-motion: reduce){ .dpscrim,.dpcard{transition:none} }
 .sheethead{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
 .sheethead h2{margin:0; font-size:18px}
 .x{width:44px; height:44px; border-radius:50%; border:0; background:transparent; font-size:22px; cursor:pointer; color:var(--muted)}
@@ -207,6 +281,41 @@ input{
   background:var(--glass-sheet); color:var(--ink); border:1px solid var(--glass-edge); -webkit-backdrop-filter:blur(20px) saturate(180%); backdrop-filter:blur(20px) saturate(180%); box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi); padding:10px 16px; border-radius:999px; font-size:13px; z-index:40;
 }
 :focus-visible{outline:2px solid var(--ink); outline-offset:2px}
+/* add-trade sheet: clear glass controls */
+.panelSheet input{
+  background:var(--field-bg); border:1px solid var(--field-line); color:var(--ink);
+  box-shadow:inset 0 1px 0 var(--field-hi), inset 0 0 12px rgba(255,255,255,.02);
+}
+.panelSheet input::placeholder{color:var(--muted); opacity:.65}
+.panelSheet :focus-visible{outline-color:rgba(var(--tint),.75)}
+.panelSheet .x{
+  width:42px; height:42px; font-size:16px; color:var(--ink);
+  background:var(--field-bg); border:1px solid var(--field-line);
+  box-shadow:inset 0 1px 0 var(--field-hi), inset 0 0 10px rgba(255,255,255,.02);
+}
+.panelSheet .chip{
+  background:var(--field-bg); border-color:var(--field-line);
+  box-shadow:inset 0 1px 0 var(--field-hi);
+}
+.panelSheet .seg button{
+  background:var(--field-bg); border:1px solid var(--field-line); color:var(--muted);
+  box-shadow:inset 0 1px 0 var(--field-hi);
+  transition:background .2s, box-shadow .2s, border-color .2s, color .2s;
+}
+.panelSheet .seg button[aria-pressed="true"]{
+  background:linear-gradient(180deg,var(--field-on),rgba(255,255,255,.02)); color:var(--ink);
+  border-color:rgba(var(--tint-soft),.32);
+  box-shadow:inset 0 0 0 1px rgba(var(--tint),.2), inset 0 0 9px 1px rgba(var(--tint),.3), inset 0 1px 1px var(--field-hi), 0 0 10px rgba(var(--tint),.1);
+}
+.panelSheet .btn.primary{
+  background:linear-gradient(180deg,rgba(var(--tint),.28),rgba(var(--tint),.12)); color:var(--ink);
+  border-color:rgba(var(--tint-soft),.36);
+  box-shadow:inset 0 0 0 1px rgba(var(--tint),.18), inset 0 0 10px rgba(var(--tint),.22), inset 0 1px 1px var(--field-hi), 0 0 12px rgba(var(--tint),.1);
+}
+.panelSheet .btn.danger{
+  background:rgba(var(--loss-rgb),.07); border-color:rgba(var(--loss-rgb),.5);
+  box-shadow:inset 0 1px 0 var(--field-hi), inset 0 0 10px rgba(var(--loss-rgb),.08);
+}
 @media (prefers-reduced-motion: reduce){
   .curve svg.draw .line{animation:none; stroke-dashoffset:0}
   .scrim,.panelSheet{transition:none}
@@ -297,8 +406,8 @@ input{
       <button class="x" id="closeSheet" aria-label="Close">&#10005;</button>
     </div>
     <form id="form" autocomplete="off">
-      <div class="g2">
-        <label>Date<input type="date" id="f-date" required></label>
+      <div class="g2" style="grid-template-columns:1.2fr 1fr">
+        <label>Date<button type="button" class="datebtn" id="f-datebtn" aria-haspopup="dialog"><span id="f-datetxt"></span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button><input type="hidden" id="f-date"></label>
         <label>Symbol<input id="f-symbol" placeholder="XAUUSD" autocapitalize="characters" required></label>
       </div>
       <div id="symChips" class="chips" style="margin:-4px 0 0"></div>
@@ -318,10 +427,25 @@ input{
         <button type="button" id="f-loss" aria-pressed="false">Loss</button>
       </div>
       <label>Amount ($)<input type="number" id="f-amt" step="0.01" min="0" inputmode="decimal" required></label>
-      <label>Note<input id="f-note" placeholder="Setup, mistake, anything worth remembering"></label>
+      <label>Note<input id="f-note" placeholder="Setup, mistake, lesson"></label>
       <button class="btn primary" type="submit" id="saveBtn">Save trade</button>
       <button class="btn danger" type="button" id="delBtn" hidden>Delete trade</button>
     </form>
+  </div>
+</div>
+<div class="dp" id="dp" hidden>
+  <div class="dpscrim" id="dpScrim"></div>
+  <div class="dpcard" role="dialog" aria-modal="true" aria-label="Choose date">
+    <div class="dphead">
+      <button type="button" class="dpnav" id="dpPrev" aria-label="Previous month"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="dpttl" id="dpTtl" aria-live="polite"></div>
+      <button type="button" class="dpnav" id="dpNext" aria-label="Next month"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="dpgrid" id="dpGrid"></div>
+    <div class="dpfoot">
+      <button type="button" class="dpbtn" id="dpToday">Today</button>
+      <button type="button" class="dpbtn" id="dpClose">Cancel</button>
+    </div>
   </div>
 </div>
 <div class="toast" id="toast" hidden></div>
@@ -572,7 +696,7 @@ try { LG = (() => {
   const RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UA = navigator.userAgent;
   if (/Chrome\//.test(UA) && !/iPhone|iPad|iPod/.test(UA)) document.documentElement.classList.add('lens');
-  const PAD = -6, EXTRA = -8;
+  const PAD = -22, EXTRA = -16;
   let px = 0, tx = 0, pw = 0, vel = 0, g = 1, grab = false, raf = 0, placed = false, wantRing = false;
   let startX = 0, suppress = false, lensKey = '';
   const tabs = () => Array.from(nav.querySelectorAll('button'));
@@ -602,7 +726,7 @@ try { LG = (() => {
     const k = grab ? 0.34 : 0.15, damp = grab ? 0.36 : 0.58;
     vel = (vel + (tx - px) * k) * damp;
     px += vel;
-    g += ((grab ? 1.08 : 1) - g) * 0.22;
+    g += ((grab ? 1.05 : 1) - g) * 0.22;
     const sp = Math.abs(vel);
     const sx = RM ? 1 : 1 + Math.min(sp * 0.022, 0.3);
     const sy = RM ? 1 : 1 - Math.min(sp * 0.006, 0.1);
@@ -684,6 +808,35 @@ function render() {
   if (S.tab === 'data') renderData();
 }
 
+/* ---------- date picker ---------- */
+const fmtDate = s => parseDay(s).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+function setDate(v) { $('f-date').value = v; $('f-datetxt').textContent = fmtDate(v); }
+const DP = { ym: '', open: false, skip: 0 };
+function renderDp() {
+  const [y, m] = DP.ym.split('-').map(Number), sel = $('f-date').value, td = today();
+  const net = {}; S.trades.forEach(t => { if (t.date.startsWith(DP.ym)) net[t.date] = (net[t.date] || 0) + t.pnl; });
+  const lead = (new Date(y, m - 1, 1).getDay() + 6) % 7, dim = new Date(y, m, 0).getDate();
+  let h = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => `<div class="dpdow">${d}</div>`).join('');
+  for (let i = 0; i < lead; i++) h += '<span></span>';
+  for (let d = 1; d <= dim; d++) {
+    const k = DP.ym + '-' + String(d).padStart(2, '0'), n = net[k];
+    h += `<button type="button" class="dpday${k === td ? ' tod' : ''}${k === sel ? ' sel' : ''}" data-act="dpday" data-d="${k}" aria-label="${dayLabel(k)}"${k === sel ? ' aria-pressed="true"' : ''}>${d}${n != null ? `<i class="${n > 0 ? 'w' : n < 0 ? 'l' : 'z'}"></i>` : ''}</button>`;
+  }
+  $('dpTtl').textContent = monthLabel(DP.ym); $('dpGrid').innerHTML = h;
+}
+function openDp() {
+  DP.ym = ($('f-date').value || today()).slice(0, 7); renderDp();
+  const el = $('dp'); el.hidden = false; DP.open = true;
+  requestAnimationFrame(() => el.classList.add('open'));
+  try { history.pushState({ sheet: 1, dp: 1 }, ''); } catch (e) {}
+}
+function hideDp() { if (!DP.open) return; DP.open = false; const el = $('dp'); el.classList.remove('open'); el.hidden = true; }
+function closeDp() {
+  const was = DP.open; hideDp();
+  try { if (was && history.state && history.state.dp) { DP.skip++; setTimeout(() => { DP.skip = 0; }, 500); history.back(); } } catch (e) {}
+}
+function pickDate(k) { setDate(k); closeDp(); }
+
 /* ---------- add / edit sheet ---------- */
 function setSide(s) { S.side = s; $('f-buy').setAttribute('aria-pressed', s === 'Buy'); $('f-sell').setAttribute('aria-pressed', s === 'Sell'); updateCalc(); }
 function setRes(r) { S.res = r; $('f-profit').setAttribute('aria-pressed', r === 'Profit'); $('f-loss').setAttribute('aria-pressed', r === 'Loss'); }
@@ -715,7 +868,7 @@ function openSheet(id) {
   $('sheetTitle').textContent = t ? 'Edit trade' : 'Add trade';
   $('saveBtn').textContent = t ? 'Save changes' : 'Save trade';
   $('delBtn').hidden = !t; $('delBtn').textContent = 'Delete trade';
-  $('f-date').value = t ? t.date : (S.day || today());
+  setDate(t ? t.date : (S.day || today()));
   $('f-symbol').value = t ? t.symbol : (S.symbol !== 'ALL' ? S.symbol : '');
   $('f-entry').value = t && t.entry != null ? t.entry : '';
   $('f-sl').value = t && t.sl != null ? t.sl : '';
@@ -731,14 +884,19 @@ function openSheet(id) {
 }
 function hideSheet() {
   if (!S.sheetOpen) return;
-  S.sheetOpen = false;
+  S.sheetOpen = false; hideDp();
   const sh = $('sheet'); sh.classList.remove('open'); sh.hidden = true;
 }
 function closeSheet() {
   const was = S.sheetOpen; hideSheet();
   try { if (was && history.state && history.state.sheet) history.back(); } catch (e) {}
 }
-window.addEventListener('popstate', hideSheet);
+window.addEventListener('popstate', () => {
+  if (DP.skip > 0) { DP.skip--; return; }
+  if (DP.open) { hideDp(); return; }
+  hideSheet();
+});
+window.addEventListener('keydown', e => { if (e.key === 'Escape' && DP.open) closeDp(); });
 
 async function submitForm(e) {
   e.preventDefault();
@@ -884,8 +1042,15 @@ document.addEventListener('click', e => {
   else if (a === 'symfill') { $('f-symbol').value = v; }
   else if (a === 'sample') loadSample();
   else if (a === 'imp') doImport(v);
+  else if (a === 'dpday') pickDate(el.dataset.d);
 });
 $('fab').onclick = () => openSheet();
+$('f-datebtn').onclick = openDp;
+$('dpPrev').onclick = () => { DP.ym = shiftMonth(DP.ym, -1); renderDp(); };
+$('dpNext').onclick = () => { DP.ym = shiftMonth(DP.ym, 1); renderDp(); };
+$('dpToday').onclick = () => pickDate(today());
+$('dpClose').onclick = closeDp;
+$('dpScrim').onclick = closeDp;
 $('closeSheet').onclick = closeSheet;
 $('scrim').onclick = closeSheet;
 $('f-buy').onclick = () => setSide('Buy');
