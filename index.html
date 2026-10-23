@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <script>(function(){try{var v=localStorage.getItem("pnl-lite"),m=navigator.deviceMemory;if(v==="1"||(v===null&&m&&m<=4))document.documentElement.classList.add("lite")}catch(e){}})();</script>
 <script>
 /* theme engine: colours only, applied before first paint */
@@ -58,8 +58,8 @@
     if(dark){
       var s=rgb(mix(bg,'#FFFFFF',.1)),d=rgb(mix(bg,'#FFFFFF',.07));
       v['--surface']=mix(bg,'#FFFFFF',.05); v['--line']=mix(mix(bg,'#FFFFFF',.11),a,.06);
-      v['--ink']='#F2F5F7'; v['--muted']=mix('#7F8B97',a,.1);
-      v['--win']='#4FD1B5'; v['--loss']='#FF6B81'; v['--win-rgb']='79,209,181'; v['--loss-rgb']='255,107,129';
+      v['--ink']='#FFFFFF'; v['--muted']=mix('#C8D1DA',a,.1);
+      v['--win']='#1FE5A0'; v['--loss']='#FF4D6D'; v['--win-rgb']='31,229,160'; v['--loss-rgb']='255,77,109';
       v['--glow']='0 0 22px rgba('+A+',.22)';
       v['--glass-bg']='rgba(255,255,255,.085)'; v['--glass-edge']='rgba(255,255,255,.24)'; v['--glass-hi']='rgba(255,255,255,.5)';
       v['--glass-sheet']='rgba('+s+',.62)'; v['--glass-shadow']='0 10px 32px rgba(0,0,0,.5)';
@@ -68,10 +68,10 @@
       v['--dp-bg']='rgba('+d+',.5)'; v['--toast-bg']='rgba('+s+',.55)'; v['--lite-bg']='rgba('+s+',.8)'; v['--lite-sheet']='rgba('+d+',.98)';
       v['--field-bg']='rgba(255,255,255,.04)'; v['--field-line']='rgba(255,255,255,.13)'; v['--field-hi']='rgba(255,255,255,.12)'; v['--field-on']='rgba(255,255,255,.09)';
     }else{
-      var ink=mix('#0B0F14',a,.1),w=rgb(mix(bg,'#FFFFFF',.6));
+      var ink=mix('#000000',a,.06),w=rgb(mix(bg,'#FFFFFF',.6));
       v['--surface']=t.surface||mix(bg,'#FFFFFF',.6); v['--line']=mix(mix(bg,'#000000',.07),a,.1);
-      v['--ink']=ink; v['--muted']=mix('#66727E',a,.15);
-      v['--win']='#0E8F77'; v['--loss']='#D13A55'; v['--win-rgb']='14,143,119'; v['--loss-rgb']='209,58,85';
+      v['--ink']=ink; v['--muted']=mix('#2E3740',a,.15);
+      v['--win']='#00A872'; v['--loss']='#F0314F'; v['--win-rgb']='0,168,114'; v['--loss-rgb']='240,49,79';
       v['--glow']='0 6px 18px rgba(0,0,0,.18)';
       v['--glass-bg']='rgba(255,255,255,.38)'; v['--glass-edge']='rgba(255,255,255,.9)'; v['--glass-hi']='rgba(255,255,255,1)';
       v['--glass-sheet']='rgba(255,255,255,.72)'; v['--glass-shadow']='0 10px 30px rgba(0,0,0,.16)';
@@ -101,8 +101,8 @@
 <title>PnL Journal</title>
 <style>
 :root{
-  --bg:#000000; --surface:#0E1114; --line:#1F262D; --ink:#F2F5F7; --muted:#7F8B97;
-  --win:#4FD1B5; --loss:#FF6B81; --win-rgb:79,209,181; --loss-rgb:255,107,129;
+  --bg:#000000; --surface:#0E1114; --line:#1F262D; --ink:#FFFFFF; --muted:#C8D1DA;
+  --win:#1FE5A0; --loss:#FF4D6D; --win-rgb:31,229,160; --loss-rgb:255,77,109;
   --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:0 0 22px rgba(255,255,255,.22);
   --glass-bg:rgba(255,255,255,.085); --glass-edge:rgba(255,255,255,.24); --glass-hi:rgba(255,255,255,.5);
   --glass-tint:rgba(70,230,140,.9); --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
@@ -116,8 +116,8 @@
 }
 @media (prefers-color-scheme: light){
   :root{
-    --bg:#F5F7F9; --surface:#FFFFFF; --line:#DDE3E9; --ink:#0B0F14; --muted:#66727E;
-    --win:#0E8F77; --loss:#D13A55; --win-rgb:14,143,119; --loss-rgb:209,58,85;
+    --bg:#F5F7F9; --surface:#FFFFFF; --line:#DDE3E9; --ink:#000000; --muted:#2E3740;
+    --win:#00A872; --loss:#F0314F; --win-rgb:0,168,114; --loss-rgb:240,49,79;
     --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:0 6px 18px rgba(0,0,0,.18);
     --glass-bg:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.9); --glass-hi:rgba(255,255,255,1);
     --glass-sheet:rgba(255,255,255,.72); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
@@ -534,16 +534,293 @@ html.lite .lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
 .shnav{display:flex; align-items:center; justify-content:space-between}
 .shnav .ttl{font-size:17px; font-weight:600; text-align:center}
 #shCanvas{display:block; width:auto; max-width:100%; max-height:46vh; margin:0 auto; border-radius:14px; border:1px solid var(--line); background:#000}
+
+/* =====================================================================
+   v2 redesign: calm dark dashboard cards, system font, solid surfaces.
+   Only looks changed. All ids, buttons and behaviour are untouched.
+   ===================================================================== */
+:root{--r-card:20px; --r-sm:14px; --mono:"Cutive Mono","Courier New",Courier,ui-monospace,Menlo,Consolas,monospace}
+body{
+  font-family:"Cutive Mono","Courier New",Courier,ui-monospace,Menlo,Consolas,monospace;
+  font-size:15px; line-height:1.4; -webkit-font-smoothing:antialiased;
+}
+/* soft ambient glow at the top (static, costs nothing) */
+body::before{
+  content:""; position:fixed; left:0; right:0; top:0; height:300px; z-index:0; pointer-events:none;
+  background:radial-gradient(70% 100% at 50% 0, rgba(var(--tint),.13), rgba(var(--tint),0) 72%);
+}
+html[data-mode="light"] body::before{opacity:.55}
+main{position:relative; z-index:1; padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 142px)}
+
+/* header */
+.top{margin:0 0 14px; min-height:40px}
+.top h1{font-size:26px; font-weight:650; letter-spacing:-.02em; color:var(--ink); margin:0}
+.topr{gap:8px}
+.chip{border-radius:999px; background:var(--surface); font-size:13px; padding:7px 14px}
+.chip[aria-pressed="true"]{background:var(--btn); color:var(--btn-ink); border-color:var(--btn)}
+.acbtn{min-height:40px; margin:0; max-width:140px; padding:0 14px; font-size:13px; font-weight:500}
+.shbtn{width:40px; height:40px; margin:0; background:var(--surface); border:1px solid var(--line)}
+.round{background:var(--surface)}
+#chips{flex-wrap:nowrap; overflow-x:auto; margin:0 -16px 14px; padding:0 16px; scrollbar-width:none}
+#chips::-webkit-scrollbar{display:none; width:0; height:0}
+#chips .chip{flex:none}
+
+/* cards */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card)}
+.hero{padding:16px 16px 14px; overflow:hidden}
+#hero::before,.lbl{display:block; font:11px/1 var(--mono); letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-bottom:10px}
+#hero::before{content:"Net P&L"}
+.big{font-size:40px; font-weight:650; letter-spacing:-.035em; line-height:1.05}
+.sub{color:var(--muted); font-size:13px; margin-top:6px}
+.hero .curve{margin:8px -16px -14px}
+.curve svg{display:block}
+
+/* stat tiles */
+.kv{column-gap:10px; row-gap:10px; margin-top:12px}
+.kv div{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:12px 14px}
+.kv dt{font:11px/1.25 var(--mono); letter-spacing:.07em; text-transform:uppercase; color:var(--muted)}
+.kv dd{margin:8px 0 0; font-size:19px; font-weight:600; letter-spacing:-.02em; line-height:1.25}
+
+/* section labels */
+#s-journal>h2,#reports h2{font:400 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:26px 4px 10px}
+.dayhead{font:11px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; margin:18px 4px 8px; align-items:center}
+.dayhead span:last-child{font:700 13px/1 var(--mono); letter-spacing:0}
+
+/* trade rows as cards */
+.trade{
+  background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:13px 14px; margin-bottom:8px;
+  gap:4px 12px; align-items:center; position:relative; transition:transform .12s;
+}
+.trade:active{transform:scale(.99)}
+.trade .nm{font-size:16px; font-weight:600}
+.trade .pl{font-size:14px; padding:4px 11px; border-radius:999px; background:rgba(127,127,127,.14)}
+.trade .pl.win{background:rgba(var(--win-rgb),.15)}
+.trade .pl.loss{background:rgba(var(--loss-rgb),.15)}
+.trade .mt{font:12px/1.4 var(--mono); margin-top:2px}
+.trade .ps{font-size:12px}
+.empty{background:var(--surface); border:1px dashed var(--line); border-radius:18px; padding:22px 16px; text-align:center; line-height:1.65; margin-top:14px}
+
+/* reports */
+.monthbar{margin:0 0 12px}
+.monthbar .ttl{font-size:18px; font-weight:600}
+.goal{margin-top:14px; padding-top:14px; border-top:1px solid var(--line)}
+.goalset{margin:14px 0 0}
+.cal{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:12px 10px; gap:5px; margin-top:12px}
+.dow{font:10px/1 var(--mono); letter-spacing:.06em; text-transform:uppercase; padding:2px 0 4px}
+.cell{border-radius:10px; border-color:transparent; background:rgba(127,127,127,.07); aspect-ratio:1 / 1.1}
+.cell.blank{background:none}
+.cell .a{font-size:10px; font-weight:700}
+.srow{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-bottom:8px}
+
+/* data tab */
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-card); padding:16px; margin-top:12px}
+.panel h2{font-size:16px; margin-bottom:2px}
+#s-data>.sub{margin:4px 0 6px}
+.btn{min-height:46px; border-radius:var(--r-sm); font-weight:600; transition:opacity .12s}
+.btn:active{opacity:.82}
+textarea,input{border-radius:var(--r-sm)}
+input{min-height:50px}
+textarea{background:var(--bg)}
+
+/* bottom nav: solid card with a soft glowing indicator */
+nav{left:16px; right:16px; max-width:528px; bottom:calc(env(safe-area-inset-bottom) + 12px); padding:5px; border-radius:26px}
+.navbg{
+  border-radius:26px; background:var(--lite-bg); border:1px solid var(--line);
+  -webkit-backdrop-filter:blur(14px) saturate(160%); backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+html.lite .navbg{background:var(--lite-bg); box-shadow:0 6px 18px rgba(0,0,0,.3)}
+nav button{min-height:52px; border-radius:20px; font-size:11px; font-weight:500; letter-spacing:.02em}
+.pill,.ring{top:6px; bottom:6px; border-radius:20px}
+.pill{
+  background:rgba(var(--tint),.14); border:1px solid rgba(var(--tint),.4);
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  box-shadow:0 0 16px rgba(var(--tint),.2), inset 0 0 10px rgba(var(--tint),.12);
+}
+.pill.grab{box-shadow:0 0 24px rgba(var(--tint),.34), inset 0 0 12px rgba(var(--tint),.22)}
+.ring{border:1.5px solid rgba(var(--tint),.5)}
+.lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
+
+/* add button: solid squircle */
+.fab,html.lite .fab,html.modal .fab{
+  right:18px; bottom:calc(env(safe-area-inset-bottom) + 88px); width:56px; height:56px; border-radius:20px;
+  background:var(--btn); color:var(--btn-ink); border:0;
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  box-shadow:0 8px 22px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.28);
+}
+
+/* sheets, calendar popup, toast: solid and light (no live blur) */
+.scrim{background:rgba(0,0,0,.5)}
+.dpscrim{background:rgba(0,0,0,.55)}
+.panelSheet,html.lite .panelSheet{
+  background:var(--lite-sheet); border:1px solid var(--line); border-bottom:0; border-radius:28px 28px 0 0;
+  -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 -12px 40px rgba(0,0,0,.35);
+  padding-top:24px;
+}
+.panelSheet::before{content:""; position:absolute; top:9px; left:50%; width:38px; height:4px; margin-left:-19px; border-radius:4px; background:rgba(127,127,127,.4)}
+.sheethead h2{font-size:19px; font-weight:650}
+.dpcard,html.lite .dpcard{
+  background:var(--lite-sheet); border:1px solid var(--line); border-radius:26px;
+  -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 20px 50px rgba(0,0,0,.45);
+}
+.toast,html.lite .toast{background:var(--lite-sheet); -webkit-backdrop-filter:none; backdrop-filter:none; box-shadow:0 8px 22px rgba(0,0,0,.3)}
+
+/* form controls */
+.panelSheet input,.panelSheet .datebtn,.panelSheet .x,.panelSheet .chip,.panelSheet .seg button,.dpnav,.dpbtn,.acrow{box-shadow:none}
+.panelSheet .datebtn{border-radius:var(--r-sm)}
+.panelSheet .seg button{border-radius:var(--r-sm)}
+.panelSheet .seg button[aria-pressed="true"]{background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none}
+#f-buy[aria-pressed="true"],#f-profit[aria-pressed="true"]{background:rgba(var(--win-rgb),.16); color:var(--win); border-color:rgba(var(--win-rgb),.65)}
+#f-sell[aria-pressed="true"],#f-loss[aria-pressed="true"]{background:rgba(var(--loss-rgb),.16); color:var(--loss); border-color:rgba(var(--loss-rgb),.65)}
+.panelSheet .btn.primary{background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none}
+.panelSheet .btn.danger{box-shadow:none}
+.dpday.sel{background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none}
+.dpday.tod{border-color:rgba(var(--tint),.7)}
+.acrow[aria-pressed="true"]{background:rgba(var(--tint),.1); border-color:rgba(var(--tint),.6); box-shadow:none}
+.acrow{border-radius:16px}
+.thcard{border-radius:22px}
+
+/* ---- polish pass ---- */
+/* compact stat tiles */
+.kv{row-gap:8px; column-gap:8px}
+.kv div{padding:10px 12px; border-radius:14px}
+.kv dt{font-size:10px; letter-spacing:.05em}
+.kv dd{margin-top:6px; font-size:17px}
+/* solid surfaces: no see-through, no blur work */
+.navbg,html.lite .navbg{background:var(--surface); -webkit-backdrop-filter:none; backdrop-filter:none}
+.panelSheet,html.lite .panelSheet,.dpcard,html.lite .dpcard,.toast,html.lite .toast{background:var(--surface)}
+/* reports: calendar right under the total, day trades under the calendar */
+#reports{display:flex; flex-direction:column}
+#reports>*{order:5}
+#reports>.monthbar{order:0}
+#reports>.hero{order:1}
+#reports>.cal{order:2}
+#reports>.dayhead,#reports>.trade,#reports>.empty{order:3}
+#reports>.kv{order:4}
+#reports>.hero .goalset{margin-top:10px}
+.hero .sub{margin-bottom:0}
+
+/* ---- vivid P&L colours ---- */
+.cell.w{box-shadow:0 0 14px rgba(var(--win-rgb),.45), inset 0 1px 0 rgba(255,255,255,.28)}
+.cell.l{box-shadow:0 0 14px rgba(var(--loss-rgb),.45), inset 0 1px 0 rgba(255,255,255,.28)}
+.cell.has .d,.cell.has .a{color:#fff; opacity:1; text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.cell.has .d{font-weight:600}
+.cell.has .a{font-weight:800; font-size:11px}
+.big.win,.big.loss,.kv dd.win,.kv dd.loss{font-weight:700}
+.big.win,.kv dd.win{text-shadow:0 0 22px rgba(var(--win-rgb),.5)}
+.big.loss,.kv dd.loss{text-shadow:0 0 22px rgba(var(--loss-rgb),.5)}
+.trade .pl.win{background:rgba(var(--win-rgb),.24); box-shadow:inset 0 0 0 1px rgba(var(--win-rgb),.55), 0 0 12px rgba(var(--win-rgb),.28)}
+.trade .pl.loss{background:rgba(var(--loss-rgb),.24); box-shadow:inset 0 0 0 1px rgba(var(--loss-rgb),.55), 0 0 12px rgba(var(--loss-rgb),.28)}
+.win,.loss{font-weight:700}
+.gbar i{box-shadow:0 0 14px rgba(var(--win-rgb),.8)}
+
+/* ---- + button: see-through liquid glass again, keeps the rounded-square shape ---- */
+.fab{
+  width:58px; height:58px; border-radius:20px; color:var(--ink);
+  background:var(--nav-bg); border:1px solid var(--nav-edge);
+  -webkit-backdrop-filter:blur(7px) saturate(180%) brightness(1.03); backdrop-filter:blur(7px) saturate(180%) brightness(1.03);
+  box-shadow:var(--nav-shadow), inset 0 1px 0 var(--nav-hi), inset 0 -1px 0 rgba(255,255,255,.06), inset 0 0 12px rgba(var(--tint),.16);
+}
+html.modal .fab{-webkit-backdrop-filter:none; backdrop-filter:none}
+html.lite .fab{-webkit-backdrop-filter:none; backdrop-filter:none; background:var(--lite-bg); box-shadow:0 4px 12px rgba(0,0,0,.3), inset 0 1px 0 var(--nav-hi)}
+html .fab,html.lite .fab,html.modal .fab{color:var(--ink)}
+html .fab svg{stroke:var(--ink)}
+
+/* ---- pair logos ---- */
+.sico{display:inline-flex; flex:none; width:22px; height:22px}
+.sico svg{width:100%; height:100%; display:block}
+.spair{position:relative; display:inline-block; flex:none; width:31px; height:24px}
+.spair svg{position:absolute; width:18px; height:18px; border-radius:50%; box-shadow:0 0 0 1.5px var(--ring,var(--surface))}
+.spair .q{right:0; top:0}
+.spair .b{left:0; bottom:0}
+.chip{display:inline-flex; align-items:center; gap:7px}
+.chip[aria-pressed="true"]{--ring:var(--btn)}
+#symChips{flex-wrap:nowrap; overflow-x:auto; padding:2px 18px 6px; scrollbar-width:none}
+#symChips::-webkit-scrollbar{display:none; width:0; height:0}
+#symChips .chip{flex:none}
+.panelSheet .chip{--ring:var(--lite-sheet)}
+.trade .nm,.srow .s{display:flex; align-items:center; gap:9px; min-width:0}
+
+/* ---- selected / primary = liquid glass (no solid white) ---- */
+.chip[aria-pressed="true"],.panelSheet .chip[aria-pressed="true"],
+.seg button[aria-pressed="true"],.panelSheet .seg button[aria-pressed="true"],
+.btn.primary,.panelSheet .btn.primary,.dpday.sel{
+  background:linear-gradient(180deg,rgba(var(--tint),.30),rgba(var(--tint),.10));
+  color:var(--ink); border-color:rgba(var(--tint),.5);
+  box-shadow:inset 0 0 0 1px rgba(var(--tint),.16), inset 0 0 12px 1px rgba(var(--tint),.28), inset 0 1px 1px var(--nav-hi), 0 0 14px rgba(var(--tint),.16);
+}
+.chip[aria-pressed="true"]{--ring:var(--surface)}
+.btn.primary:active,.chip[aria-pressed="true"]:active{filter:brightness(1.15)}
+
+/* ---- stat tiles: progress rings (Journal) ---- */
+:root{--rg-a:34,211,238; --rg-b:139,123,255; --rg-c:255,176,32; --rg-d:255,122,69; --rg-e:255,111,168}
+html[data-mode="light"]{--rg-a:8,145,178; --rg-b:106,76,240; --rg-c:217,119,6; --rg-d:234,88,12; --rg-e:219,39,119}
+@media (prefers-color-scheme: light){html:not([data-mode]){--rg-a:8,145,178; --rg-b:106,76,240; --rg-c:217,119,6; --rg-d:234,88,12; --rg-e:219,39,119}}
+.kv div.hasrg{display:grid; grid-template-columns:minmax(0,1fr) auto; column-gap:8px; align-items:center}
+.kv .hasrg dt{grid-column:1; grid-row:1; align-self:end}
+.kv .hasrg dd{grid-column:1; grid-row:2; align-self:start; min-width:0; overflow-wrap:anywhere}
+.rgw{grid-column:2; grid-row:1 / span 2; width:48px; height:48px; display:block}
+.rgw svg{width:48px; height:48px; display:block; overflow:visible}
+.rgtk{stroke:rgba(127,127,127,.22); stroke-width:2; stroke-linecap:round}
+.rgfx{filter:drop-shadow(0 0 2.5px rgba(var(--gl),.5))}
+html[data-mode="light"] .rgfx{filter:drop-shadow(0 0 2px rgba(var(--gl),.3))}
+@media (prefers-color-scheme: light){html:not([data-mode]) .rgfx{filter:drop-shadow(0 0 2px rgba(var(--gl),.3))}}
+html.lite .rgfx{filter:none}
+.rgt{font:700 11px/1 var(--mono); fill:var(--ink); letter-spacing:-.02em}
+.rgt.sm{font-size:9px}
+@keyframes rgfade{from{opacity:0}}
+.rgpop{animation:rgfade .35s ease-out both}
+html.lite .rgpop{animation:none}
+@media (prefers-reduced-motion: reduce){.rgpop{animation:none}}
+
+/* ---- custom backgrounds (app + share card) ---- */
+#appbg{position:fixed; left:0; right:0; top:0; bottom:0; z-index:-1; background-size:cover; background-position:center; background-repeat:no-repeat; pointer-events:none}
+#appbg i{position:absolute; left:0; right:0; top:0; bottom:0}
+html:not(.has-bg) #appbg{display:none}
+html.has-bg body{background:transparent}
+.bgset{gap:8px}
+.bgprev{position:relative; height:96px; border-radius:14px; border:1px solid var(--line); background-size:cover; background-position:center; overflow:hidden}
+.bgprev i{position:absolute; left:0; right:0; top:0; bottom:0}
+.bglvl{display:flex; align-items:center; gap:10px}
+.bglvl small{font-size:11px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase}
+input.bgrange{flex:1; width:auto; min-height:32px; padding:0; border:0; background:none; box-shadow:none; accent-color:rgb(var(--tint))}
+.btns .btn:disabled{opacity:.4}
+
+/* text visibility: Cutive Mono is very thin, so every glyph gets a hair of extra weight (font itself unchanged) */
+body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<clipPath id="fc"><circle cx="12" cy="12" r="12"/></clipPath>
+<linearGradient id="solg" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#19FB9B"/><stop offset="1" stop-color="#9945FF"/></linearGradient>
+<linearGradient id="goldg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7D060"/><stop offset="1" stop-color="#D49A1C"/></linearGradient>
+<g id="gbc"><rect width="24" height="24" fill="#012169"/><path d="M0 0L24 24M24 0L0 24" stroke="#fff" stroke-width="4.5"/><path d="M0 0L24 24M24 0L0 24" stroke="#C8102E" stroke-width="1.6"/><path d="M12 0V24M0 12H24" stroke="#fff" stroke-width="7"/><path d="M12 0V24M0 12H24" stroke="#C8102E" stroke-width="4"/></g>
+<symbol id="fl-gb" viewBox="0 0 24 24"><g clip-path="url(#fc)"><use href="#gbc"/></g></symbol>
+<symbol id="fl-us" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#fff"/><path d="M0 .9H24M0 4.6H24M0 8.3H24M0 12H24M0 15.7H24M0 19.4H24M0 23.1H24" stroke="#D62839" stroke-width="1.85"/><rect width="12.5" height="13" fill="#2B3A82"/><path d="M2 2.6H11.6M3.6 5.2H11.6M2 7.8H11.6M3.6 10.4H11.6" stroke="#fff" stroke-width="1.1" stroke-linecap="round" stroke-dasharray="0 3.2"/></g></symbol>
+<symbol id="fl-jp" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#fff"/><circle cx="12" cy="12" r="5.6" fill="#BC002D"/></g></symbol>
+<symbol id="fl-eu" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#1B3FA0"/><circle cx="12" cy="12" r="7" fill="none" stroke="#FFD21E" stroke-width="1.7" stroke-linecap="round" stroke-dasharray="0 3.665"/></g></symbol>
+<symbol id="fl-ca" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#D80621"/><rect x="6" width="12" height="24" fill="#fff"/><path d="M12 5l1.3 3.2 2.4-.9-.8 3.6 2.1 1-3.9 2.5.3 2.6h-2.8l.3-2.6-3.9-2.5 2.1-1-.8-3.6 2.4.9z" fill="#D80621"/></g></symbol>
+<symbol id="fl-nz" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#012169"/><use href="#gbc" transform="scale(.5)"/><g fill="#CC142B" stroke="#fff" stroke-width=".5"><circle cx="17.5" cy="6" r="1.4"/><circle cx="20.5" cy="11" r="1.4"/><circle cx="17" cy="19" r="1.4"/><circle cx="14" cy="12.5" r="1.4"/></g></g></symbol>
+<symbol id="fl-au" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#00247D"/><use href="#gbc" transform="scale(.5)"/><path d="M6 14l1 2.3 2.4-.4-1.7 1.8 1.2 2.2-2.3-1.1-1.9 1.7.2-2.5-2.3-1.1 2.4-.5z" fill="#fff"/><g fill="#fff"><circle cx="18" cy="5.5" r="1"/><circle cx="20.5" cy="11" r="1"/><circle cx="16.5" cy="16" r="1"/><circle cx="19.5" cy="19.5" r="1"/><circle cx="14" cy="10.5" r=".8"/></g></g></symbol>
+<symbol id="fl-ch" viewBox="0 0 24 24"><g clip-path="url(#fc)"><rect width="24" height="24" fill="#D52B1E"/><path d="M12 5.5V18.5M5.5 12H18.5" stroke="#fff" stroke-width="4.2"/></g></symbol>
+<symbol id="i-xau" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="url(#goldg)"/><g fill="#FFF6D6"><path d="M4.6 17.2L5.8 13.6H10.2L11.4 17.2Z"/><path d="M12.6 17.2L13.8 13.6H18.2L19.4 17.2Z"/><path d="M8.6 12.9L9.8 9.3H14.2L15.4 12.9Z"/></g></symbol>
+<symbol id="i-xag" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#A9AAB6"/><g fill="#fff"><path d="M4.6 17.2L5.8 13.6H10.2L11.4 17.2Z"/><path d="M12.6 17.2L13.8 13.6H18.2L19.4 17.2Z"/><path d="M8.6 12.9L9.8 9.3H14.2L15.4 12.9Z"/></g></symbol>
+<symbol id="i-oil" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#12171D"/><path d="M12 5c2.7 3.3 4.4 5.6 4.4 7.9a4.4 4.4 0 0 1-8.8 0C7.6 10.600 9.300 8.300 12 5z" fill="#fff"/></symbol>
+<symbol id="i-nas" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#0A9BC9"/><text x="12" y="15.4" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="Arial,Helvetica,sans-serif">100</text></symbol>
+<symbol id="i-spx" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#D1242F"/><text x="12" y="15.4" text-anchor="middle" font-size="9.5" font-weight="800" fill="#fff" font-family="Arial,Helvetica,sans-serif">500</text></symbol>
+<symbol id="i-btc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#F7931A"/><g transform="rotate(14 12 12)"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" font-family="Arial,Helvetica,sans-serif">B</text><path d="M10.200 4.600v2.200M13.200 4.600v2.200M10.200 17.600v2.200M13.200 17.600v2.200" stroke="#fff" stroke-width="1.400" stroke-linecap="round"/></g></symbol>
+<symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1B1C27"/><g fill="url(#solg)"><path d="M7.800 7h9.400l-1.400 1.800H6.400z"/><path d="M6.400 11.100h9.400l1.400 1.800H7.800z"/><path d="M7.800 15.200h9.400l-1.400 1.800H6.400z"/></g></symbol>
+</defs></svg>
 <main>
   <div class="top"><h1 id="title">Journal</h1><div class="topr"><button type="button" class="chip acbtn" id="acBtn" aria-haspopup="dialog" aria-label="Accounts"></button><button class="round shbtn" id="shareBtn" aria-label="Share card"><svg viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M5 13v6h14v-6"/></svg></button></div></div>
   <div id="chips" class="chips" role="group" aria-label="Filter by symbol" hidden></div>
 
   <section id="s-journal">
-    <div id="hero"></div>
-    <div id="curve" class="curve"></div>
+    <div class="card hero">
+      <div id="hero"></div>
+      <div id="curve" class="curve"></div>
+    </div>
     <dl id="stats" class="kv"></dl>
     <h2>Trades</h2>
     <div id="list"></div>
@@ -602,6 +879,25 @@ html.lite .lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
       <div class="btns"><button class="btn" id="themeBtn"></button></div>
     </div>
 
+    <div class="panel" id="bgPanel">
+      <h2 style="margin-top:0">Backgrounds</h2>
+      <p>Put your own picture behind the whole app and on the P&amp;L cards you share. Use the slider to make the picture darker or lighter.</p>
+      <div class="stack">
+        <div class="fld bgset"><span>App background</span>
+          <div class="bgprev" id="bgPrevApp" hidden><i></i></div>
+          <div class="bglvl"><small>Dark</small><input type="range" class="bgrange" id="bgLvlApp" min="0" max="100" step="1" aria-label="App background brightness"><small>Light</small></div>
+          <div class="btns"><button class="btn" type="button" id="bgPickApp">Choose image</button><button class="btn" type="button" id="bgClearApp">Remove</button></div>
+          <input type="file" id="bgFileApp" accept="image/*" hidden>
+        </div>
+        <div class="fld bgset"><span>P&amp;L card background</span>
+          <div class="bgprev" id="bgPrevCard" hidden><i></i></div>
+          <div class="bglvl"><small>Dark</small><input type="range" class="bgrange" id="bgLvlCard" min="0" max="100" step="1" aria-label="Card background brightness"><small>Light</small></div>
+          <div class="btns"><button class="btn" type="button" id="bgPickCard">Choose image</button><button class="btn" type="button" id="bgClearCard">Remove</button></div>
+          <input type="file" id="bgFileCard" accept="image/*" hidden>
+        </div>
+      </div>
+    </div>
+
     <div class="panel">
       <h2 style="margin-top:0">Smooth mode</h2>
       <p>Turns off the glass blur so the app stays fast on older phones. Auto decides for you.</p>
@@ -645,7 +941,7 @@ html.lite .lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
         <label>Date<button type="button" class="datebtn" id="f-datebtn" aria-haspopup="dialog"><span id="f-datetxt"></span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></button><input type="hidden" id="f-date"></label>
         <label>Symbol<input id="f-symbol" placeholder="XAUUSD" autocapitalize="characters" required></label>
       </div>
-      <div id="symChips" class="chips" style="margin:-4px 0 0"></div>
+      <div id="symChips" class="chips" style="margin:-4px -18px 0"></div>
       <div class="seg" role="group" aria-label="Side">
         <button type="button" id="f-buy" aria-pressed="true">Buy</button>
         <button type="button" id="f-sell" aria-pressed="false">Sell</button>
@@ -851,6 +1147,20 @@ function visible() {
   return t.slice().sort((a, b) => a.date.localeCompare(b.date) || a.id - b.id);
 }
 
+/* ---------- trading pair list + logos (inline, works offline) ---------- */
+const DEFAULT_SYMS = ['XAUUSD', 'NAS100', 'USOIL', 'XAGUSD', 'SPX500', 'GBPUSD', 'USDJPY', 'EURUSD', 'USDCAD', 'GBPJPY', 'NZDUSD', 'AUDUSD', 'BTCUSDT', 'SOLUSDT'];
+const SYM_ICON = { XAUUSD: 'i-xau', XAGUSD: 'i-xag', USOIL: 'i-oil', NAS100: 'i-nas', SPX500: 'i-spx', BTCUSDT: 'i-btc', BTCUSD: 'i-btc', SOLUSDT: 'i-sol', SOLUSD: 'i-sol' };
+const FLAG = { USD: 'us', GBP: 'gb', JPY: 'jp', EUR: 'eu', CAD: 'ca', NZD: 'nz', AUD: 'au', CHF: 'ch' };
+const svgUse = (id, cls) => `<svg${cls ? ' class="' + cls + '"' : ''} viewBox="0 0 24 24" aria-hidden="true"><use href="#${id}"/></svg>`;
+function symIcon(sym) {
+  const s = String(sym || '').toUpperCase();
+  if (SYM_ICON[s]) return `<span class="sico">${svgUse(SYM_ICON[s])}</span>`;
+  const m = /^([A-Z]{3})([A-Z]{3})$/.exec(s);
+  if (m && FLAG[m[1]] && FLAG[m[2]]) return `<span class="spair">${svgUse('fl-' + FLAG[m[2]], 'q')}${svgUse('fl-' + FLAG[m[1]], 'b')}</span>`;
+  const t = s.replace(/[^A-Z0-9]/g, '').slice(0, 2) || '?';
+  return `<span class="sico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#3A4350"/><text x="12" y="15.3" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Arial,Helvetica,sans-serif">${t}</text></svg></span>`;
+}
+
 function renderChips() {
   const syms = [...new Set(S.trades.map(t => t.symbol))].sort();
   if (S.symbol !== 'ALL' && !syms.includes(S.symbol)) S.symbol = 'ALL';
@@ -858,17 +1168,53 @@ function renderChips() {
   $('chips').hidden = !show;
   if (!show) return;
   $('chips').innerHTML = ['ALL', ...syms].map(s =>
-    `<button class="chip" data-act="chip" data-v="${esc(s)}" aria-pressed="${S.symbol === s}">${s === 'ALL' ? 'All' : esc(s)}</button>`).join('');
+    `<button class="chip" data-act="chip" data-v="${esc(s)}" aria-pressed="${S.symbol === s}">${s === 'ALL' ? 'All' : symIcon(s) + '<span>' + esc(s) + '</span>'}</button>`).join('');
 }
 
 function kv(items) {
-  return items.map(([k, v, c]) => `<div><dt>${k}</dt><dd class="${c || ''}">${v}</dd></div>`).join('');
+  return items.map(([k, v, c, rg]) => rg
+    ? `<div class="hasrg"><dt>${k}</dt><dd class="${c || ''}">${v}</dd>${rg}</div>`
+    : `<div><dt>${k}</dt><dd class="${c || ''}">${v}</dd></div>`).join('');
+}
+
+/* ---------- progress rings for the Journal stat tiles ---------- */
+function ringVals(tr, st) {
+  let cum = 0, pk = 0; tr.forEach(t => { cum += t.pnl; pk = Math.max(pk, cum); });
+  const gw = sum(tr.filter(t => t.pnl > 0).map(t => t.pnl)), gl = Math.abs(sum(tr.filter(t => t.pnl < 0).map(t => t.pnl)));
+  const aL = st.avgL == null ? null : Math.abs(st.avgL);
+  const cl = v => v == null ? null : Math.max(0, Math.min(1, v));
+  return [
+    cl(st.winRate),                                                              // win rate
+    gw + gl > 0 ? cl(gw / (gw + gl)) : null,                                     // profit factor -> share of gross profit
+    st.avgW > 0 ? cl(st.exp / st.avgW) : null,                                   // expectancy vs average win
+    pk > 0 ? cl(st.dd / pk) : (st.dd > 0 ? 1 : 0),                               // drawdown vs peak profit
+    st.avgW != null ? cl(st.avgW / (st.avgW + (aL || 0))) : null,                // average win share
+    aL != null ? cl(aL / (aL + (st.avgW || 0))) : null,                          // average loss share
+    st.avgRR != null ? cl(st.avgRR / (1 + st.avgRR)) : null,                     // planned reward share
+    st.avgR != null && st.avgRR > 0 ? cl(st.avgR / st.avgRR) : null              // result vs planned
+  ];
+}
+
+function ringHtml(i, p, anim) {
+  /* one design for every tile: radial tick ring, each tile with its own colour */
+  const COL = ['var(--win-rgb)', 'var(--tint)', 'var(--rg-c)', 'var(--rg-d)', 'var(--rg-a)', 'var(--loss-rgb)', 'var(--rg-b)', 'var(--rg-e)'], col = COL[i];
+  const ptAt = (a, r) => { const t = a * Math.PI / 180; return [26 + r * Math.sin(t), 26 - r * Math.cos(t)]; };
+  const f = n => n.toFixed(2), q = p == null ? 0 : p, N = 36, k = q > 0.003 ? Math.max(1, Math.round(q * N)) : 0;
+  const label = p == null ? '\u2014' : Math.round(q * 100) + '%';
+  let off = '', lit = '';
+  for (let j = 0; j < N; j++) {
+    const a = j * 360 / N, [x1, y1] = ptAt(a, 15.5), [x2, y2] = ptAt(a, 23);
+    const ln = `x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"`;
+    if (j < k) lit += `<line class="rgtk${anim ? ' rgpop' : ''}" ${ln} style="stroke:rgb(${col});opacity:${(.4 + .6 * (k > 1 ? j / (k - 1) : 1)).toFixed(2)}${anim ? ';animation-delay:' + (j * 16) + 'ms' : ''}"/>`;
+    else off += `<line class="rgtk" ${ln}/>`;
+  }
+  return `<span class="rgw" style="--gl:${col}" aria-hidden="true"><svg viewBox="0 0 52 52">${off}<g class="rgfx">${lit}</g><text class="rgt${label.length > 3 ? ' sm' : ''}" x="26" y="26" dy=".35em" text-anchor="middle">${label}</text></svg></span>`;
 }
 
 function curveSvg(tr) {
   if (!tr.length) return '';
   const pts = [0]; tr.forEach(t => pts.push(pts[pts.length - 1] + t.pnl));
-  const W = 400, H = 190, padX = 18, padY = 22;
+  const W = 400, H = 78, padX = 18, padY = 10;
   const lo = Math.min(0, ...pts), hi = Math.max(0, ...pts), span = (hi - lo) || 1;
   const x = i => padX + (W - 2 * padX) * (i / (pts.length - 1 || 1));
   const y = v => padY + (H - 2 * padY) * (1 - (v - lo) / span);
@@ -898,7 +1244,7 @@ function tradeRow(t) {
                   t.sl != null ? 'SL ' + px(t.sl) : '', t.tp != null ? 'TP ' + px(t.tp) : ''].filter(Boolean).join(' \u00b7 ');
   const sub = [c.pts != null ? pts(c.pts) : '', c.r != null ? rtxt(c.r) : '', c.rr != null ? 'plan ' + rrtxt(c.rr) : '', t.session || ''].filter(Boolean).join(' \u00b7 ');
   return `<button class="trade" data-act="edit" data-id="${t.id}">
-    <span class="nm">${esc(t.symbol)} \u00b7 ${t.side}</span><span class="pl ${cls(t.pnl)}">${money(t.pnl)}</span>
+    <span class="nm">${symIcon(t.symbol)}<span>${esc(t.symbol)} \u00b7 ${t.side}</span></span><span class="pl ${cls(t.pnl)}">${money(t.pnl)}</span>
     <span class="mt">${esc(prices)}</span><span class="ps">${esc(sub)}</span>
     ${t.note ? `<span class="nt">${esc(t.note)}</span>` : ''}
   </button>`;
@@ -906,18 +1252,19 @@ function tradeRow(t) {
 
 function renderJournal() {
   const tr = visible(), st = stats(tr);
-  $('hero').innerHTML = `<div class="big">${money(st.net).replace('+', '')}</div>
+  $('hero').innerHTML = `<div class="big ${cls(st.net)}">${money(st.net).replace('+', '')}</div>
     <div class="sub">${tr.length ? tr.length + ' trade' + (tr.length === 1 ? '' : 's') + (S.symbol === 'ALL' ? '' : ' \u00b7 ' + esc(S.symbol)) : 'No trades yet'}</div>`;
   $('curve').innerHTML = curveSvg(tr);
+  const rv = tr.length ? ringVals(tr, st) : [], rgAnim = tr.length && !S.rgDrawn; if (tr.length) S.rgDrawn = true;
   $('stats').innerHTML = tr.length ? kv([
-    ['Win rate', st.winRate == null ? '\u2014' : Math.round(st.winRate * 100) + '%'],
-    ['Profit factor', st.pf == null ? '\u2014' : fixed(st.pf, 2)],
-    ['Expectancy per trade', money(st.exp), cls(st.exp)],
-    ['Max drawdown', st.dd ? money(-st.dd) : '\u2014', st.dd ? 'loss' : ''],
-    ['Average win', money(st.avgW), 'win'],
-    ['Average loss', money(st.avgL), 'loss'],
-    ['Average planned R:R', rrtxt(st.avgRR)],
-    ['Average result', rtxt(st.avgR), cls(st.avgR)]
+    ['Win rate', st.winRate == null ? '\u2014' : Math.round(st.winRate * 100) + '%', '', ringHtml(0, rv[0], rgAnim)],
+    ['Profit factor', st.pf == null ? '\u2014' : fixed(st.pf, 2), '', ringHtml(1, rv[1], rgAnim)],
+    ['Expectancy per trade', money(st.exp), cls(st.exp), ringHtml(2, rv[2], rgAnim)],
+    ['Max drawdown', st.dd ? money(-st.dd) : '\u2014', st.dd ? 'loss' : '', ringHtml(3, rv[3], rgAnim)],
+    ['Average win', money(st.avgW), 'win', ringHtml(4, rv[4], rgAnim)],
+    ['Average loss', money(st.avgL), 'loss', ringHtml(5, rv[5], rgAnim)],
+    ['Average planned R:R', rrtxt(st.avgRR), '', ringHtml(6, rv[6], rgAnim)],
+    ['Average result', rtxt(st.avgR), cls(st.avgR), ringHtml(7, rv[7], rgAnim)]
   ]) : '';
   if (!tr.length) {
     $('list').innerHTML = `<p class="empty">Your trades will show here. Tap + to add your first one, or <button class="link" data-act="sample">load sample trades</button> to see how it looks.</p>`;
@@ -949,8 +1296,8 @@ function renderReports() {
   for (let d = 1; d <= dim; d++) {
     const key = S.month + '-' + String(d).padStart(2, '0');
     if (dayNet[key] != null) {
-      const n = dayNet[key], a = (0.16 + 0.44 * Math.abs(n) / maxAbs).toFixed(2);
-      cells += `<button class="cell has ${S.day === key ? 'sel' : ''}" data-act="day" data-d="${key}" style="background:rgba(var(${n >= 0 ? '--win-rgb' : '--loss-rgb'}),${a})" aria-label="${dayLabel(key)} ${money(n)}">
+      const n = dayNet[key], a = (0.34 + 0.56 * Math.abs(n) / maxAbs).toFixed(2);
+      cells += `<button class="cell has ${n >= 0 ? 'w' : 'l'} ${S.day === key ? 'sel' : ''}" data-act="day" data-d="${key}" style="background:rgba(var(${n >= 0 ? '--win-rgb' : '--loss-rgb'}),${a})" aria-label="${dayLabel(key)} ${money(n)}">
         <span class="d">${d}</span><span class="a">${compact(n)}</span></button>`;
     } else cells += `<div class="cell"><span class="d">${d}</span></div>`;
   }
@@ -958,7 +1305,7 @@ function renderReports() {
   const bySym = {}; mt.forEach(t => (bySym[t.symbol] = bySym[t.symbol] || []).push(t));
   const symRows = Object.keys(bySym).sort().map(s => {
     const x = stats(bySym[s]);
-    return `<div class="srow" style="cursor:default"><span class="s">${esc(s)}</span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
+    return `<div class="srow" style="cursor:default"><span class="s">${symIcon(s)}<span>${esc(s)}</span></span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
   }).join('');
 
   const bySes = {}; mt.forEach(t => { if (t.session) (bySes[t.session] = bySes[t.session] || []).push(t); });
@@ -984,10 +1331,11 @@ function renderReports() {
       <div class="ttl">${monthLabel(S.month)}</div>
       <button class="round" data-act="mnav" data-v="1" aria-label="Next month">&#8250;</button>
     </div>
-    <div class="big" style="font-size:40px; margin-top:10px">${money(st.net).replace('+', '')}</div>
+    <div class="card hero"><div class="lbl">Net P&amp;L</div>
+    <div class="big ${cls(st.net)}">${money(st.net).replace('+', '')}</div>
     <div class="sub">${mt.length ? mt.length + ' trade' + (mt.length === 1 ? '' : 's') + ' in ' + days.length + ' day' + (days.length === 1 ? '' : 's') : 'No trades this month'}</div>
-    ${goalHtml(st.net)}
-    <dl class="kv" style="margin-top:14px">${mt.length ? kv([
+    ${goalHtml(st.net)}</div>
+    <dl class="kv">${mt.length ? kv([
       ['Win rate', st.winRate == null ? '\u2014' : Math.round(st.winRate * 100) + '%'],
       ['Profit factor', st.pf == null ? '\u2014' : fixed(st.pf, 2)],
       ['Best day', best ? dayLabel(best) + '<br>' + money(dayNet[best]) : '\u2014', best && dayNet[best] > 0 ? 'win' : ''],
@@ -1175,8 +1523,8 @@ function paintCalc() {
 }
 
 function symChips() {
-  const syms = [...new Set(['XAUUSD', 'NAS100', ...S.trades.map(t => t.symbol)])];
-  $('symChips').innerHTML = syms.map(s => `<button type="button" class="chip" data-act="symfill" data-v="${esc(s)}" aria-pressed="false">${esc(s)}</button>`).join('');
+  const syms = [...new Set([...DEFAULT_SYMS, ...S.trades.map(t => t.symbol)])];
+  $('symChips').innerHTML = syms.map(s => `<button type="button" class="chip" data-act="symfill" data-v="${esc(s)}" aria-pressed="false">${symIcon(s)}<span>${esc(s)}</span></button>`).join('');
 }
 
 function openSheet(id) {
@@ -1361,6 +1709,65 @@ const SET = { unit: '$', goal: null, balance: null, name: '', hide: false };
 try { const v = JSON.parse(localStorage.getItem('pnl-settings') || 'null'); if (v && typeof v === 'object') Object.assign(SET, v); } catch (e) {}
 function saveSet() { try { localStorage.setItem('pnl-settings', JSON.stringify(SET)); } catch (e) {} }
 const pctOf = n => SET.balance > 0 ? n / SET.balance * 100 : null;
+
+/* ---------- custom backgrounds: whole app + share card ---------- */
+const BG = { app: null, card: null, cardImg: null };
+const BGK = { app: 'pnl-bg-app', card: 'pnl-bg-card' };
+const BGID = { app: 'App', card: 'Card' };
+const bgLvl = w => { const v = w === 'app' ? SET.bgApp : SET.bgCard; return v == null ? (w === 'app' ? 30 : 35) : v; };
+/* slider 0 = black, 50 = picture as it is, 100 = washed to light */
+function bgShade(v) { const f = v / 50; return f < 1 ? 'rgba(0,0,0,' + ((1 - f) * .92).toFixed(3) + ')' : 'rgba(255,255,255,' + ((f - 1) * .65).toFixed(3) + ')'; }
+function bgApply(w) {
+  const url = BG[w], shade = bgShade(bgLvl(w)), id = BGID[w];
+  if (w === 'app') {
+    let el = $('appbg');
+    if (!el) { el = document.createElement('div'); el.id = 'appbg'; el.setAttribute('aria-hidden', 'true'); el.appendChild(document.createElement('i')); document.body.insertBefore(el, document.body.firstChild); }
+    el.style.backgroundImage = url ? 'url("' + url + '")' : 'none';
+    el.firstChild.style.background = shade;
+    document.documentElement.classList.toggle('has-bg', !!url);
+  }
+  const pv = $('bgPrev' + id);
+  pv.hidden = !url; pv.style.backgroundImage = url ? 'url("' + url + '")' : 'none'; pv.firstChild.style.background = shade;
+  $('bgClear' + id).disabled = !url;
+  $('bgLvl' + id).value = bgLvl(w);
+}
+function bgCardImg() {
+  if (!BG.card) { BG.cardImg = null; return; }
+  const im = new Image();
+  im.onload = () => { BG.cardImg = im; if (SH.open) refreshShare(); };
+  im.src = BG.card;
+}
+function bgPick(w, file) {
+  if (!file) return;
+  const fr = new FileReader();
+  fr.onerror = () => toast('Could not read that image');
+  fr.onload = () => {
+    const im = new Image();
+    im.onerror = () => toast('Could not read that image');
+    im.onload = () => {
+      const tries = w === 'app' ? [[1280, .8], [900, .7]] : [[1350, .85], [1000, .72]];
+      for (const [mx, q] of tries) {
+        const sc = Math.min(1, mx / Math.max(im.naturalWidth, im.naturalHeight));
+        const cv = document.createElement('canvas'); cv.width = Math.max(1, Math.round(im.naturalWidth * sc)); cv.height = Math.max(1, Math.round(im.naturalHeight * sc));
+        const cx = cv.getContext('2d'); cx.fillStyle = '#000'; cx.fillRect(0, 0, cv.width, cv.height); cx.drawImage(im, 0, 0, cv.width, cv.height);
+        const url = cv.toDataURL('image/jpeg', q);
+        try { localStorage.setItem(BGK[w], url); BG[w] = url; bgApply(w); if (w === 'card') bgCardImg(); toast('Background set'); return; } catch (e) {}
+      }
+      toast('Image is too big to save');
+    };
+    im.src = fr.result;
+  };
+  fr.readAsDataURL(file);
+}
+function bgClear(w) {
+  try { localStorage.removeItem(BGK[w]); } catch (e) {}
+  BG[w] = null; if (w === 'card') BG.cardImg = null;
+  bgApply(w); toast('Background removed');
+}
+function bgInit() {
+  try { BG.app = localStorage.getItem(BGK.app) || null; BG.card = localStorage.getItem(BGK.card) || null; } catch (e) {}
+  bgApply('app'); bgApply('card'); bgCardImg();
+}
 const pcttxt = n => n == null ? '\u2014' : sgn(n) + fixed(n, 2) + '%';
 
 function setSess(v) {
@@ -1454,7 +1861,7 @@ function cardData() {
             ['Trades', String(st.n)], ['Avg result', rtxt(st.avgR), st.avgR]] };
 }
 
-const CARD_DEF = { bg: '#000000', ink: '#F2F5F7', muted: '#7F8B97', line: '#1F262D', win: '#4FD1B5', loss: '#FF6B81',
+const CARD_DEF = { bg: '#000000', ink: '#FFFFFF', muted: '#B2BDC8', line: '#1F262D', win: '#4FD1B5', loss: '#FF6B81',
   curve: '#F2F5F7', curveRgb: '242,245,247', winRgb: '79,209,181', lossRgb: '255,107,129', glow: '255,255,255' };
 let CARD = CARD_DEF;
 /* share card follows the chosen theme (Default keeps the original black card) */
@@ -1476,6 +1883,11 @@ function drawCard(cv, d) {
   const tone = v => v > 0 ? C.win : v < 0 ? C.loss : C.ink;
   const fit = (txt, size, max) => { let f = size; ctx.font = f + 'px ' + MONO; while (ctx.measureText(txt).width > max && f > 18) { f -= 2; ctx.font = f + 'px ' + MONO; } };
   ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
+  if (BG.cardImg) {
+    const im = BG.cardImg, sc = Math.max(W / im.naturalWidth, H / im.naturalHeight), iw = im.naturalWidth * sc, ih = im.naturalHeight * sc;
+    ctx.drawImage(im, (W - iw) / 2, (H - ih) / 2, iw, ih);
+    ctx.fillStyle = bgShade(bgLvl('card')); ctx.fillRect(0, 0, W, H);
+  }
   const gc = d.tone > 0 ? C.winRgb : d.tone < 0 ? C.lossRgb : C.glow;
   const g = ctx.createRadialGradient(W / 2, 380, 20, W / 2, 380, 820);
   g.addColorStop(0, 'rgba(' + gc + ',.18)'); g.addColorStop(1, 'rgba(' + gc + ',0)');
@@ -1824,6 +2236,13 @@ $('pasteBtn').onclick = () => showImport($('paste').value);
 $('clearBtn').onclick = clearAll;
 $('liteBtn').onclick = cycleLite;
 $('themeBtn').onclick = openTheme;
+['app', 'card'].forEach(w => {
+  const id = BGID[w];
+  $('bgPick' + id).onclick = () => $('bgFile' + id).click();
+  $('bgFile' + id).addEventListener('change', e => { const f = e.target.files && e.target.files[0]; e.target.value = ''; bgPick(w, f); });
+  $('bgClear' + id).onclick = () => bgClear(w);
+  $('bgLvl' + id).addEventListener('input', e => { if (w === 'app') SET.bgApp = +e.target.value; else SET.bgCard = +e.target.value; saveSet(); bgApply(w); });
+});
 $('acBtn').onclick = openAc;
 $('acClose').onclick = closeAc;
 $('acScrim').onclick = closeAc;
@@ -1877,6 +2296,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http') &&
   window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
 }
 
+bgInit();
 (async () => { S.trades = await load(); acLabel(); render(); })();
 </script>
 <div id="sbar" aria-hidden="true"></div>
