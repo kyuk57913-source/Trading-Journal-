@@ -139,23 +139,12 @@ body{
 }
 button{font:inherit; color:inherit}
 
-/* slim scrollbar */
-*::-webkit-scrollbar{width:3px; height:3px; background:transparent}
-*::-webkit-scrollbar-track{background:transparent}
-*::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2); border-radius:3px}
-*::-webkit-scrollbar-thumb:active{background:rgba(255,255,255,.35)}
-*::-webkit-scrollbar-corner{background:transparent}
-@media (prefers-color-scheme: light){
-  *::-webkit-scrollbar-thumb{background:rgba(11,15,20,.22)}
-  *::-webkit-scrollbar-thumb:active{background:rgba(11,15,20,.38)}
-}
-@supports not selector(::-webkit-scrollbar){
-  *{scrollbar-width:thin; scrollbar-color:rgba(127,139,151,.4) transparent}
-}
+/* hide native (right-side) scrollbars everywhere; the custom left #sbar stays */
+*{scrollbar-width:none; -ms-overflow-style:none}
+*::-webkit-scrollbar{display:none; width:0; height:0; background:transparent}
+html,body{touch-action:manipulation}
 html{height:100%; overflow:hidden}
 body{height:100%; overflow-x:hidden; overflow-y:auto; overscroll-behavior-y:contain}
-body{scrollbar-width:none}
-body::-webkit-scrollbar{display:none; width:0; height:0}
 #sbar{
   position:fixed; left:2px; top:6px; width:3px; height:40px; border-radius:3px; z-index:6;
   background:rgba(255,255,255,.38); opacity:0; transition:opacity .3s ease; pointer-events:none; will-change:transform,opacity;
@@ -436,12 +425,8 @@ html.lite .ring{display:none}
 }
 
 
-/* scrollbar colours follow the chosen theme */
-html[data-mode="dark"] *::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2)}
-html[data-mode="dark"] *::-webkit-scrollbar-thumb:active{background:rgba(255,255,255,.35)}
+/* sbar colour follows the chosen theme */
 html[data-mode="dark"] #sbar{background:rgba(255,255,255,.38)}
-html[data-mode="light"] *::-webkit-scrollbar-thumb{background:rgba(11,15,20,.22)}
-html[data-mode="light"] *::-webkit-scrollbar-thumb:active{background:rgba(11,15,20,.38)}
 html[data-mode="light"] #sbar{background:rgba(11,15,20,.35)}
 
 /* theme page (own screen) */
