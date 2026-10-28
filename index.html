@@ -13,7 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<script>(function(){try{var v=localStorage.getItem("pnl-lite"),m=navigator.deviceMemory;if(v==="1"||(v===null&&m&&m<=4))document.documentElement.classList.add("lite")}catch(e){}})();</script>
+<script>(function(){try{var v=localStorage.getItem("pnl-lite"),m=navigator.deviceMemory;if(v==="1"||v===null)document.documentElement.classList.add("lite")}catch(e){}})();</script>
 <script>
 /* theme engine: colours only, applied before first paint */
 (function(){
@@ -103,7 +103,7 @@
 :root{
   --bg:#000000; --surface:#0E1114; --line:#1F262D; --ink:#FFFFFF; --muted:#C8D1DA;
   --win:#1FE5A0; --loss:#FF4D6D; --win-rgb:31,229,160; --loss-rgb:255,77,109;
-  --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:0 0 22px rgba(255,255,255,.22);
+  --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:none;
   --glass-bg:rgba(255,255,255,.085); --glass-edge:rgba(255,255,255,.24); --glass-hi:rgba(255,255,255,.5);
   --glass-tint:rgba(70,230,140,.9); --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
   --tint:70,230,140; --tint-soft:170,255,210;
@@ -118,7 +118,7 @@
   :root{
     --bg:#F5F7F9; --surface:#FFFFFF; --line:#DDE3E9; --ink:#000000; --muted:#2E3740;
     --win:#00A872; --loss:#F0314F; --win-rgb:0,168,114; --loss-rgb:240,49,79;
-    --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:0 6px 18px rgba(0,0,0,.18);
+    --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:none;
     --glass-bg:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.9); --glass-hi:rgba(255,255,255,1);
     --glass-sheet:rgba(255,255,255,.72); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
     --tint:24,190,110; --tint-soft:120,225,170;
@@ -143,11 +143,16 @@ button{font:inherit; color:inherit}
 *{scrollbar-width:none; -ms-overflow-style:none}
 *::-webkit-scrollbar{display:none; width:0; height:0; background:transparent}
 html,body{touch-action:manipulation}
+/* sheets/popups: scrolling stays inside them, the page behind is locked */
+.panelSheet,.dpcard,.sheet,.dp{overscroll-behavior:contain}
+.scrim,.dpscrim{touch-action:none}
+html.modal body{overflow:hidden}
+html.modal #sbar{display:none}
 html{height:100%; overflow:hidden}
 body{height:100%; overflow-x:hidden; overflow-y:auto; overscroll-behavior-y:contain}
 #sbar{
   position:fixed; left:2px; top:6px; width:3px; height:40px; border-radius:3px; z-index:6;
-  background:rgba(255,255,255,.38); opacity:0; transition:opacity .3s ease; pointer-events:none; will-change:transform,opacity;
+  background:rgba(255,255,255,.38); opacity:0; transition:opacity .3s ease; pointer-events:none;
 }
 #sbar.on{opacity:1}
 @media (prefers-color-scheme: light){ #sbar{background:rgba(11,15,20,.35)} }
@@ -622,7 +627,7 @@ nav button{min-height:52px; border-radius:20px; font-size:11px; font-weight:500;
   -webkit-backdrop-filter:none; backdrop-filter:none;
   box-shadow:0 0 16px rgba(var(--tint),.2), inset 0 0 10px rgba(var(--tint),.12);
 }
-.pill.grab{box-shadow:0 0 24px rgba(var(--tint),.34), inset 0 0 12px rgba(var(--tint),.22)}
+.pill.grab{box-shadow:0 0 10px rgba(var(--tint),.18)}
 .ring{border:1.5px solid rgba(var(--tint),.5)}
 .lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
 
@@ -686,18 +691,18 @@ nav button{min-height:52px; border-radius:20px; font-size:11px; font-weight:500;
 .hero .sub{margin-bottom:0}
 
 /* ---- vivid P&L colours ---- */
-.cell.w{box-shadow:0 0 14px rgba(var(--win-rgb),.45), inset 0 1px 0 rgba(255,255,255,.28)}
-.cell.l{box-shadow:0 0 14px rgba(var(--loss-rgb),.45), inset 0 1px 0 rgba(255,255,255,.28)}
-.cell.has .d,.cell.has .a{color:#fff; opacity:1; text-shadow:0 1px 2px rgba(0,0,0,.5)}
-.cell.has .d{font-weight:600}
-.cell.has .a{font-weight:800; font-size:11px}
+.cell.w{box-shadow:none}
+.cell.l{box-shadow:none}
+.cell.has .d,.cell.has .a{color:var(--ink); opacity:1; text-shadow:none}
+.cell.has .d{font-weight:600; opacity:.8}
+.cell.has .a{font-weight:700; font-size:11px}
 .big.win,.big.loss,.kv dd.win,.kv dd.loss{font-weight:700}
-.big.win,.kv dd.win{text-shadow:0 0 22px rgba(var(--win-rgb),.5)}
-.big.loss,.kv dd.loss{text-shadow:0 0 22px rgba(var(--loss-rgb),.5)}
+.big.win,.kv dd.win{text-shadow:none}
+.big.loss,.kv dd.loss{text-shadow:none}
 .trade .pl.win{background:rgba(var(--win-rgb),.24); box-shadow:inset 0 0 0 1px rgba(var(--win-rgb),.55), 0 0 12px rgba(var(--win-rgb),.28)}
 .trade .pl.loss{background:rgba(var(--loss-rgb),.24); box-shadow:inset 0 0 0 1px rgba(var(--loss-rgb),.55), 0 0 12px rgba(var(--loss-rgb),.28)}
 .win,.loss{font-weight:700}
-.gbar i{box-shadow:0 0 14px rgba(var(--win-rgb),.8)}
+.gbar i{box-shadow:none}
 
 /* ---- + button: see-through liquid glass again, keeps the rounded-square shape ---- */
 .fab{
@@ -747,9 +752,9 @@ html[data-mode="light"]{--rg-a:8,145,178; --rg-b:106,76,240; --rg-c:217,119,6; -
 .rgw{grid-column:2; grid-row:1 / span 2; width:48px; height:48px; display:block}
 .rgw svg{width:48px; height:48px; display:block; overflow:visible}
 .rgtk{stroke:rgba(127,127,127,.22); stroke-width:2; stroke-linecap:round}
-.rgfx{filter:drop-shadow(0 0 2.5px rgba(var(--gl),.5))}
-html[data-mode="light"] .rgfx{filter:drop-shadow(0 0 2px rgba(var(--gl),.3))}
-@media (prefers-color-scheme: light){html:not([data-mode]) .rgfx{filter:drop-shadow(0 0 2px rgba(var(--gl),.3))}}
+.rgfx{filter:none}
+html[data-mode="light"] .rgfx{filter:none}
+@media (prefers-color-scheme: light){html:not([data-mode]) .rgfx{filter:none}}
 html.lite .rgfx{filter:none}
 .rgt{font:700 11px/1 var(--mono); fill:var(--ink); letter-spacing:-.02em}
 .rgt.sm{font-size:9px}
@@ -1281,7 +1286,7 @@ function renderReports() {
   for (let d = 1; d <= dim; d++) {
     const key = S.month + '-' + String(d).padStart(2, '0');
     if (dayNet[key] != null) {
-      const n = dayNet[key], a = (0.34 + 0.56 * Math.abs(n) / maxAbs).toFixed(2);
+      const n = dayNet[key], a = '0.26';
       cells += `<button class="cell has ${n >= 0 ? 'w' : 'l'} ${S.day === key ? 'sel' : ''}" data-act="day" data-d="${key}" style="background:rgba(var(${n >= 0 ? '--win-rgb' : '--loss-rgb'}),${a})" aria-label="${dayLabel(key)} ${money(n)}">
         <span class="d">${d}</span><span class="a">${compact(n)}</span></button>`;
     } else cells += `<div class="cell"><span class="d">${d}</span></div>`;
@@ -1337,7 +1342,7 @@ function renderReports() {
 
 function liteState() { try { return localStorage.getItem('pnl-lite'); } catch (e) { return null; } }
 function applyLite() {
-  const v = liteState(), auto = !!(navigator.deviceMemory && navigator.deviceMemory <= 4), on = v === '1' || (v === null && auto);
+  const v = liteState(), auto = true, on = v === '1' || (v === null && auto);
   document.documentElement.classList.toggle('lite', on);
   $('liteBtn').textContent = 'Smooth mode: ' + (v === null ? 'Auto (' + (auto ? 'on' : 'off') + ')' : v === '1' ? 'On' : 'Off');
 }
