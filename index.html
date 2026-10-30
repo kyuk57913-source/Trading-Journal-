@@ -10,9 +10,6 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
 <script>(function(){try{var v=localStorage.getItem("pnl-lite"),m=navigator.deviceMemory;if(v==="1"||v===null)document.documentElement.classList.add("lite")}catch(e){}})();</script>
 <script>
 /* theme engine: colours only, applied before first paint */
@@ -24,42 +21,23 @@
   var lum=function(h){var c=h2r(h).map(function(v){v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]};
   var on=function(h){var L=lum(h);return 1.05/(L+.05)>=(L+.05)/.05?'#FFFFFF':'#0B0F14'};
   var L=[
-    {id:'default',name:'Default',sys:true},
-    {id:'midnight',name:'Midnight',mode:'dark',accent:'#FFFFFF',bg:'#000000'},
-    {id:'dark',name:'Dark',mode:'dark',accent:'#64C8FF',bg:'#0A0D10'},
-    {id:'snow',name:'Snow White',mode:'light',accent:'#5F6BFF'},
-    {id:'sakura',name:'Sakura',mode:'light',accent:'#FF6FA8'},
-    {id:'emerald',name:'Emerald',mode:'light',accent:'#00CC6F'},
-    {id:'ocean',name:'Ocean',mode:'light',accent:'#1A1AFF'},
-    {id:'lavender',name:'Lavender',mode:'light',accent:'#8000FF'},
-    {id:'mocha',name:'Mocha',mode:'light',accent:'#5E2D00',foot:'#A99C91',dot:'#5B5048'},
-    {id:'sunset',name:'Sunset',mode:'light',accent:'#FF7A00'},
-    {id:'indigo',name:'Indigo',mode:'dark',accent:'#939BFF',bg:'#0A0A10'},
-    {id:'notepad',name:'Notepad',mode:'light',accent:'#587290',bg:'#FFF8E5',track:'#E0DED6',foot:'#F0EAD6',dot:'#A89F8E'},
-    {id:'flame',name:'Flame',mode:'light',accent:'#E0282B'},
-    {id:'sunshine',name:'Sunshine',mode:'light',accent:'#C8A000'},
-    {id:'lagoon',name:'Lagoon',mode:'light',accent:'#00968A'},
-    {id:'mint',name:'Mint',mode:'light',accent:'#3EB489'},
-    {id:'coral',name:'Coral',mode:'light',accent:'#FF6F61'},
-    {id:'rosegold',name:'Rose Gold',mode:'light',accent:'#B76E79'},
-    {id:'navy',name:'Navy',mode:'dark',accent:'#64B0FF',bg:'#080C14'},
-    {id:'slate',name:'Slate',mode:'dark',accent:'#8FA1C7',bg:'#0C0F14'},
-    {id:'bordeaux',name:'Bordeaux',mode:'dark',accent:'#D9A387',bg:'#0F0809'}
+    {id:'default',name:'Black',mode:'dark',accent:'#E8E8E8',bg:'#000000'},
+    {id:'gold',name:'Gold',mode:'dark',accent:'#C9A44C',bg:'#000000'},
+    {id:'silver',name:'Silver',mode:'dark',accent:'#AEB6C2',bg:'#000000'},
+    {id:'graphite',name:'Graphite',mode:'dark',accent:'#E8E8E8',bg:'#111111'},
+    {id:'white',name:'White',mode:'light',accent:'#111111',bg:'#FFFFFF'}
   ];
   var sysDark=function(){try{return !(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)}catch(e){return true}};
-  function resolve(t){
-    if(!t.sys)return t;
-    return sysDark()?{id:'default',name:'Default',mode:'dark',accent:'#FFFFFF',bg:'#000000'}:{id:'default',name:'Default',mode:'light',accent:'#0B0F14',bg:'#F5F7F9'};
-  }
+  function resolve(t){return t}
   function vars(t){
     var dark=t.mode==='dark',a=t.accent,bg=t.bg||mix('#FFFFFF',a,.05),A=rgb(a),AS=rgb(mix(a,'#FFFFFF',dark?.5:.45)),v={};
     v['--bg']=bg; v['--btn']=a; v['--btn-ink']=on(a); v['--curve']=a;
     v['--tint']=A; v['--tint-soft']=AS; v['--glass-tint']='rgba('+A+',.9)';
     if(dark){
       var s=rgb(mix(bg,'#FFFFFF',.1)),d=rgb(mix(bg,'#FFFFFF',.07));
-      v['--surface']=mix(bg,'#FFFFFF',.05); v['--line']=mix(mix(bg,'#FFFFFF',.11),a,.06);
-      v['--ink']='#FFFFFF'; v['--muted']=mix('#C8D1DA',a,.1);
-      v['--win']='#1FE5A0'; v['--loss']='#FF4D6D'; v['--win-rgb']='31,229,160'; v['--loss-rgb']='255,77,109';
+      v['--surface']=mix(bg,'#FFFFFF',.04); v['--line']=mix(bg,'#FFFFFF',.16);
+      v['--ink']='#E8E8E8'; v['--muted']='#8C8C8C'; v['--metal']='linear-gradient(135deg,#fff 0%,#8e9391 14%,#fff 28%,#ffd6d6 42%,#c9ddff 56%,#fff 68%,#d3ffd8 82%,#9aa09d 92%,#fff 100%)'; v['--metal-soft']='linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.13) 28%,rgba(255,255,255,.34) 50%,rgba(255,255,255,.12) 72%,rgba(255,255,255,.5))';
+      v['--win']='#00CA19'; v['--loss']='#E24A58'; v['--win-rgb']='0,202,25'; v['--loss-rgb']='226,74,88';
       v['--glow']='0 0 22px rgba('+A+',.22)';
       v['--glass-bg']='rgba(255,255,255,.085)'; v['--glass-edge']='rgba(255,255,255,.24)'; v['--glass-hi']='rgba(255,255,255,.5)';
       v['--glass-sheet']='rgba('+s+',.62)'; v['--glass-shadow']='0 10px 32px rgba(0,0,0,.5)';
@@ -70,8 +48,8 @@
     }else{
       var ink=mix('#000000',a,.06),w=rgb(mix(bg,'#FFFFFF',.6));
       v['--surface']=t.surface||mix(bg,'#FFFFFF',.6); v['--line']=mix(mix(bg,'#000000',.07),a,.1);
-      v['--ink']=ink; v['--muted']=mix('#2E3740',a,.15);
-      v['--win']='#00A872'; v['--loss']='#F0314F'; v['--win-rgb']='0,168,114'; v['--loss-rgb']='240,49,79';
+      v['--ink']='#111111'; v['--muted']='#6A6A6A'; v['--metal']='linear-gradient(135deg,#111 0%,#9a9a9a 16%,#222 30%,#c98a8a 46%,#8aa6d6 58%,#222 70%,#8ac99a 84%,#111 100%)'; v['--metal-soft']='linear-gradient(135deg,rgba(0,0,0,.5),rgba(0,0,0,.12) 28%,rgba(0,0,0,.3) 50%,rgba(0,0,0,.1) 72%,rgba(0,0,0,.45))';
+      v['--win']='#0A9F1E'; v['--loss']='#D2303F'; v['--win-rgb']='10,159,30'; v['--loss-rgb']='210,48,63';
       v['--glow']='0 6px 18px rgba(0,0,0,.18)';
       v['--glass-bg']='rgba(255,255,255,.38)'; v['--glass-edge']='rgba(255,255,255,.9)'; v['--glass-hi']='rgba(255,255,255,1)';
       v['--glass-sheet']='rgba(255,255,255,.72)'; v['--glass-shadow']='0 10px 30px rgba(0,0,0,.16)';
@@ -101,9 +79,10 @@
 <title>PnL Journal</title>
 <style>
 :root{
-  --bg:#000000; --surface:#0E1114; --line:#1F262D; --ink:#FFFFFF; --muted:#C8D1DA;
-  --win:#1FE5A0; --loss:#FF4D6D; --win-rgb:31,229,160; --loss-rgb:255,77,109;
+  --bg:#000000; --surface:#0A0A0A; --line:#292929; --ink:#E8E8E8; --muted:#8C8C8C;
+  --win:#00CA19; --loss:#E24A58; --win-rgb:0,202,25; --loss-rgb:226,74,88;
   --btn:#F2F5F7; --btn-ink:#000000; --curve:#FFFFFF; --glow:none;
+  --metal:linear-gradient(135deg,#fff 0%,#8e9391 14%,#fff 28%,#ffd6d6 42%,#c9ddff 56%,#fff 68%,#d3ffd8 82%,#9aa09d 92%,#fff 100%); --metal-soft:linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.13) 28%,rgba(255,255,255,.34) 50%,rgba(255,255,255,.12) 72%,rgba(255,255,255,.5));
   --glass-bg:rgba(255,255,255,.085); --glass-edge:rgba(255,255,255,.24); --glass-hi:rgba(255,255,255,.5);
   --glass-tint:rgba(70,230,140,.9); --glass-sheet:rgba(26,30,36,.62); --glass-shadow:0 10px 32px rgba(0,0,0,.5);
   --tint:70,230,140; --tint-soft:170,255,210;
@@ -113,22 +92,6 @@
   --dp-bg:rgba(18,22,27,.5); --toast-bg:rgba(26,30,36,.55); --lite-bg:rgba(22,26,31,.8); --lite-sheet:rgba(16,19,23,.98);
   --field-bg:rgba(255,255,255,.04); --field-line:rgba(255,255,255,.13); --field-hi:rgba(255,255,255,.12); --field-on:rgba(255,255,255,.09);
   color-scheme:dark;
-}
-@media (prefers-color-scheme: light){
-  :root{
-    --bg:#F5F7F9; --surface:#FFFFFF; --line:#DDE3E9; --ink:#000000; --muted:#2E3740;
-    --win:#00A872; --loss:#F0314F; --win-rgb:0,168,114; --loss-rgb:240,49,79;
-    --btn:#0B0F14; --btn-ink:#FFFFFF; --curve:#0B0F14; --glow:none;
-    --glass-bg:rgba(255,255,255,.38); --glass-edge:rgba(255,255,255,.9); --glass-hi:rgba(255,255,255,1);
-    --glass-sheet:rgba(255,255,255,.72); --glass-shadow:0 10px 30px rgba(0,0,0,.16);
-    --tint:24,190,110; --tint-soft:120,225,170;
-    --nav-bg:rgba(255,255,255,.19); --nav-edge:rgba(255,255,255,.55); --nav-hi:rgba(255,255,255,.85);
-    --nav-shadow:0 8px 24px rgba(0,0,0,.12);
-    --sheet-bg:rgba(255,255,255,.36); --sheet-shadow:0 -8px 30px rgba(0,0,0,.1);
-    --dp-bg:rgba(255,255,255,.55); --toast-bg:rgba(255,255,255,.6); --lite-bg:rgba(255,255,255,.84); --lite-sheet:rgba(250,251,252,.99);
-    --field-bg:rgba(255,255,255,.32); --field-line:rgba(11,15,20,.1); --field-hi:rgba(255,255,255,.9); --field-on:rgba(255,255,255,.6);
-    color-scheme:light;
-  }
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
 [hidden]{display:none !important}
@@ -523,6 +486,10 @@ html.lite .lgtap{-webkit-backdrop-filter:none; backdrop-filter:none}
 /* share sheet */
 .shnav{display:flex; align-items:center; justify-content:space-between}
 .shnav .ttl{font-size:17px; font-weight:600; text-align:center}
+/* share style options */
+.shopt{display:flex; flex-direction:column; gap:6px}
+.shopt .shlbl{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-top:4px}
+.shopt .seg button{min-height:40px; font-size:12px}
 #shCanvas{display:block; width:auto; max-width:100%; max-height:46vh; margin:0 auto; border-radius:14px; border:1px solid var(--line); background:#000}
 
 /* =====================================================================
@@ -572,7 +539,7 @@ main{position:relative; z-index:1; padding:calc(env(safe-area-inset-top) + 16px)
 .kv dd{margin:8px 0 0; font-size:19px; font-weight:600; letter-spacing:-.02em; line-height:1.25}
 
 /* section labels */
-#s-journal>h2,#reports h2{font:400 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:26px 4px 10px}
+#s-journal>h2,#reports h2,#list h2{font:400 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:26px 4px 10px}
 .dayhead{font:11px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; margin:18px 4px 8px; align-items:center}
 .dayhead span:last-child{font:700 13px/1 var(--mono); letter-spacing:0}
 
@@ -685,8 +652,8 @@ nav button{min-height:52px; border-radius:20px; font-size:11px; font-weight:500;
 #reports>.monthbar{order:0}
 #reports>.hero{order:1}
 #reports>.cal{order:2}
-#reports>.dayhead,#reports>.trade,#reports>.empty{order:3}
-#reports>.kv{order:4}
+#reports>.kv{order:3}
+#reports>h2,#reports>.dayhead,#reports>.trade,#reports>.empty{order:4}
 #reports>.hero .goalset{margin-top:10px}
 .hero .sub{margin-bottom:0}
 
@@ -778,6 +745,285 @@ input.bgrange{flex:1; width:auto; min-height:32px; padding:0; border:0; backgrou
 
 /* text visibility: Cutive Mono is very thin, so every glyph gets a hair of extra weight (font itself unchanged) */
 body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
+
+/* =====================================================================
+   CLASSIC BLACK — flat, hairline, serif. Overrides everything above.
+   Logic / ids / behaviour untouched.
+   ===================================================================== */
+:root{
+  --serif:"Noto Serif",Georgia,"Times New Roman",serif; --mono:var(--serif);
+  --r-card:0; --r-sm:0; --btn-ink:#000;
+}
+html,body{background:var(--bg)}
+body,input,textarea,button{font-family:var(--serif); -webkit-text-stroke:0; font-variant-numeric:lining-nums tabular-nums; letter-spacing:0}
+body{font-size:15px; line-height:1.45}
+body::before,.lgtap{display:none}
+main{padding:calc(env(safe-area-inset-top) + 18px) 18px calc(env(safe-area-inset-bottom) + 104px)}
+
+/* square everything */
+.card,.kv div,.trade,.srow,.panel,.cal,.empty,.cell,.chip,.acbtn,.shbtn,.round,.btn,.seg button,
+.panelSheet,.panelSheet .chip,.panelSheet .seg button,.panelSheet .datebtn,.panelSheet .x,.panelSheet input,
+.dpcard,.dpday,.dpnav,.dpbtn,.acrow,.thcard,input,textarea,.datebtn,.x,.toast,#shCanvas,.bgprev,.fab,.gbar,.gbar i{border-radius:0}
+
+/* header */
+.top{margin:0 0 18px; padding-bottom:12px; border-bottom:1px solid var(--line); min-height:0}
+.top h1{font-size:19px; font-weight:400; letter-spacing:.2em; text-transform:uppercase; color:var(--ink)}
+.acbtn{min-height:34px; font-size:12px; letter-spacing:.06em; background:none; font-weight:400}
+.shbtn,.round{background:none; border:1px solid var(--line); color:var(--ink)}
+.shbtn{width:34px; height:34px}
+.shbtn svg{stroke-width:1.4; stroke-linecap:butt; stroke-linejoin:miter}
+.round{width:40px; height:40px}
+
+/* chips + segmented */
+.chip{background:none; border:1px solid var(--line); color:var(--muted); font-size:11px; letter-spacing:.12em; text-transform:uppercase; padding:6px 12px; min-height:34px}
+.chip[aria-pressed="true"],.panelSheet .chip[aria-pressed="true"],.seg button[aria-pressed="true"],.panelSheet .seg button[aria-pressed="true"]{
+  background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none; filter:none}
+.seg button,.panelSheet .seg button{background:none; border:1px solid var(--line); color:var(--muted); font-weight:400; font-size:12px; letter-spacing:.1em; text-transform:uppercase; box-shadow:none}
+#f-buy[aria-pressed="true"],#f-profit[aria-pressed="true"]{background:none; color:var(--win); border-color:var(--win)}
+#f-sell[aria-pressed="true"],#f-loss[aria-pressed="true"]{background:none; color:var(--loss); border-color:var(--loss)}
+.panelSheet .chip{background:none; box-shadow:none}
+
+/* hero */
+.card,.hero{background:none; border:0; border-bottom:1px solid var(--line); padding:6px 0 18px}
+.hero .curve{margin:12px 0 0}
+#hero::before{font-size:10px; letter-spacing:.24em; margin-bottom:12px}
+.big{font-size:42px; font-weight:400; letter-spacing:-.01em}
+.sub{font-size:12px; letter-spacing:.04em; font-style:italic}
+.win,.loss,.big.win,.big.loss,.kv dd.win,.kv dd.loss{font-weight:400}
+.curve svg.draw .line{animation:none; stroke-dashoffset:0}
+
+/* stat grid = ledger */
+.kv{gap:0; margin-top:0; border-left:1px solid var(--line)}
+.kv div,.kv div.hasrg{display:block; position:relative; background:none; border:0; border-right:1px solid var(--line); border-bottom:1px solid var(--line); padding:13px 12px 14px}
+.kv dt{font-size:9.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted)}
+.kv dd{margin:7px 0 0; font-size:18px; font-weight:400; letter-spacing:0}
+.rgw{display:block; width:auto; height:2px; margin-top:12px; background:var(--line); position:static}
+.rgw svg{display:none}
+.rgw i{display:block; height:2px; background:var(--ink)}
+.rgw b{position:absolute; right:12px; bottom:15px; font-size:10px; font-weight:400; color:var(--muted); letter-spacing:.06em}
+
+/* section labels */
+#s-journal>h2,#reports h2,#list h2{font-size:10px; letter-spacing:.24em; margin:30px 0 4px; font-weight:400}
+.dayhead{font-size:10px; letter-spacing:.18em; margin:22px 0 0; padding-bottom:8px; border-bottom:1px solid #3a3a3a; align-items:baseline}
+.dayhead span:last-child{font-size:13px; font-weight:400; letter-spacing:.02em}
+
+/* trades = plain ledger lines */
+.trade{background:none; border:0; border-bottom:1px solid var(--line); padding:14px 0; margin:0; transition:none}
+.trade:active{transform:none; background:rgba(127,127,127,.1)}
+.trade .nm{font-size:16px; font-weight:400}
+.trade .pl,.trade .pl.win,.trade .pl.loss{background:none; box-shadow:none; padding:0; font-size:15px; font-weight:400; border-radius:0}
+.trade .mt{font-size:12px; letter-spacing:.01em}
+.trade .nt{font-style:italic}
+.empty{border:1px solid var(--line); background:none; font-style:italic}
+
+/* reports */
+.monthbar .ttl{font-size:16px; font-weight:400; letter-spacing:.2em; text-transform:uppercase}
+.cal{background:none; border:0; padding:0; gap:2px; margin-top:14px}
+.dow{font-size:9.5px; letter-spacing:.14em}
+.cell{background:none; border:1px solid var(--line); aspect-ratio:1/1}
+.cell.blank{border-color:transparent}
+.cell.has{border-color:transparent}
+.cell.sel{outline:1px solid var(--ink); outline-offset:-1px}
+.cell .d{font-size:10px}
+.cell.w{background:rgba(var(--win-rgb),.13); border:1px solid rgba(var(--win-rgb),.4)}
+.cell.l{background:rgba(var(--loss-rgb),.13); border:1px solid rgba(var(--loss-rgb),.4)}
+.cell.w .d,.cell.w .a{color:var(--win); opacity:1}
+.cell.l .d,.cell.l .a{color:var(--loss); opacity:1}
+.cell.has .a{font-weight:600; font-size:10.5px}
+.srow{background:none; border:0; border-bottom:1px solid var(--line); padding:13px 0; margin:0}
+.goal{border-top:1px solid var(--line)}
+.gbar{height:2px; background:var(--line)}
+.gbar i{background:var(--ink); box-shadow:none; transition:none}
+
+/* data */
+.panel{background:none; border:0; border-top:1px solid var(--line); padding:18px 0; margin:0}
+.panel h2{font-size:12px; font-weight:400; letter-spacing:.2em; text-transform:uppercase}
+
+/* buttons + fields */
+.btn,.dpbtn{background:none; border:1px solid var(--ink); color:var(--ink); min-height:46px; font-size:11.5px; font-weight:400; letter-spacing:.18em; text-transform:uppercase; box-shadow:none}
+.btn.primary,.panelSheet .btn.primary{background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none}
+.btn.danger,.panelSheet .btn.danger{background:none; color:var(--loss); border-color:var(--loss); box-shadow:none}
+input,textarea,.panelSheet input,.panelSheet .datebtn{background:var(--bg); border:1px solid var(--line); color:var(--ink); box-shadow:none}
+input:focus,textarea:focus{border-color:var(--ink); outline:0}
+label,.fld{font-size:10px; letter-spacing:.16em; text-transform:uppercase}
+.datebtn svg{stroke:var(--ink); stroke-width:1.3; stroke-linecap:butt; stroke-linejoin:miter}
+
+/* bottom bar */
+nav{left:0; right:0; bottom:0; max-width:none; margin:0; padding:0 0 env(safe-area-inset-bottom); border-radius:0; background:#000; border-top:1px solid var(--line); cursor:default}
+.navbg,html.lite .navbg{border-radius:0; border:0; box-shadow:none; background:#000}
+nav button{border-radius:0; min-height:58px; gap:5px; font-size:9.5px; font-weight:400; letter-spacing:.2em; text-transform:uppercase}
+nav button[aria-current="page"],nav button.hot{color:var(--ink)}
+nav svg{width:22px; height:22px; stroke-width:1.2; stroke-linecap:butt; stroke-linejoin:miter}
+.pill{top:-1px; bottom:auto; height:2px; border-radius:0; background:var(--ink); border:0; box-shadow:none; transform-origin:50% 50%}
+.pill.grab,.pill.on{box-shadow:none}
+.ring{display:none}
+.fab,html.lite .fab,html.modal .fab{right:18px; bottom:calc(env(safe-area-inset-bottom) + 78px); width:50px; height:50px; border-radius:0; background:#000; border:1px solid var(--ink); color:var(--ink); box-shadow:none}
+html .fab svg{stroke:var(--ink); stroke-width:1.3; stroke-linecap:butt}
+.fab:active{transform:none; background:#141414}
+
+/* sheets + popups */
+.scrim,.dpscrim{background:rgba(0,0,0,.72)}
+.panelSheet,html.lite .panelSheet{background:var(--surface); border:0; border-top:1px solid var(--ink); border-radius:0; box-shadow:none; padding-top:20px}
+.panelSheet::before{display:none}
+.sheethead h2{font-size:13px; font-weight:400; letter-spacing:.22em; text-transform:uppercase}
+.panelSheet .x,.x{background:none; border:1px solid var(--line); width:38px; height:38px; font-size:15px; color:var(--ink)}
+.dpcard,html.lite .dpcard{background:var(--surface); border:1px solid var(--line); box-shadow:none}
+.dpttl{font-size:14px; letter-spacing:.16em; text-transform:uppercase}
+.dpnav{background:none; border:1px solid var(--line)}
+.dpday{font-size:14px}
+.dpday.sel{background:var(--btn); color:var(--btn-ink); border-color:var(--btn); box-shadow:none}
+.dpday.tod{border-color:var(--muted)}
+.toast,html.lite .toast{background:var(--surface); border:1px solid var(--ink); box-shadow:none; font-size:12px; letter-spacing:.06em}
+.acrow{background:none; border:0; border-bottom:1px solid var(--line); box-shadow:none}
+.acrow[aria-pressed="true"]{background:none; border-bottom-color:var(--ink); box-shadow:none}
+.acrow .ck{stroke:var(--ink); stroke-width:1.5}
+.aclist{gap:0}
+
+/* theme page */
+.themepage{background:var(--bg)}
+.thcard{background:none; border:1px solid var(--line)}
+.thcard[aria-pressed="true"]{border:1px solid var(--ink); padding:8px 8px 9px}
+.thbar h2{font-size:13px; font-weight:400; letter-spacing:.22em; text-transform:uppercase}
+.thname{font-size:11px; letter-spacing:.14em; text-transform:uppercase}
+
+/* logos in grey so only P&L carries colour */
+.sico svg,.spair svg{filter:none; opacity:1}
+
+/* ===== LIQUID METAL tab bar ===== */
+main{padding-bottom:calc(env(safe-area-inset-bottom) + 120px)}
+nav{left:14px; right:14px; max-width:532px; margin:0 auto; bottom:calc(env(safe-area-inset-bottom) + 12px); padding:5px; border-radius:34px; border:0; background:none}
+.navbg,html.lite .navbg{border-radius:34px; border:1px solid rgba(255,255,255,.16);
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
+    linear-gradient(150deg,#6d706b 0%,#474944 38%,#2a2b29 72%,#1d1e1c 100%);
+  box-shadow:0 12px 26px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.32), inset 0 -12px 20px rgba(0,0,0,.35)}
+nav button{border-radius:999px; min-height:54px; color:rgba(255,255,255,.62); text-shadow:0 1px 1px rgba(0,0,0,.45)}
+nav button[aria-current="page"],nav button.hot{color:#fff}
+nav svg{stroke-width:1.4}
+.pill{top:5px; bottom:5px; height:auto; border-radius:999px; border:2.5px solid transparent; position:absolute;
+  background-origin:border-box; background-clip:padding-box,padding-box,border-box;
+  background-image:
+    radial-gradient(120% 90% at 25% 10%,rgba(255,255,255,.2),transparent 50%),
+    linear-gradient(115deg,#1c1d1c 0 36%,#6c6f6b 37% 39%,#141514 40% 62%,#7d807c 63% 65%,#1c1d1c 66%),
+    conic-gradient(from 200deg,#fff,#ffd0d0 .07turn,#cfe2ff .18turn,#fff .3turn,#d4ffd8 .5turn,#fff .62turn,#ffe3b8 .8turn,#fff);
+  box-shadow:0 7px 14px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,90,90,.35), inset 0 0 0 2px rgba(90,130,255,.22)}
+.pill::after{content:""; position:absolute; left:14%; right:14%; top:6%; height:32%; border-radius:999px; background:linear-gradient(rgba(255,255,255,.3),rgba(255,255,255,0))}
+.pill.grab{box-shadow:0 10px 20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.25), inset 0 0 0 1px rgba(255,90,90,.4), inset 0 0 0 2px rgba(90,130,255,.3)}
+.ring,html.lite .ring{display:block; top:5px; bottom:5px; border-radius:999px; border:1.5px solid rgba(255,255,255,.55)}
+.fab,html.lite .fab,html.modal .fab{bottom:calc(env(safe-area-inset-bottom) + 90px)}
+
+/* ===== LIQUID METAL + button ===== */
+.fab,html.lite .fab,html.modal .fab{width:58px; height:58px; border-radius:50%; border:2.5px solid transparent; color:#fff;
+  background-origin:border-box; background-clip:padding-box,padding-box,padding-box,border-box;
+  background-color:transparent;
+  background-image:
+    radial-gradient(90% 70% at 30% 12%,rgba(255,255,255,.24),transparent 55%),
+    radial-gradient(circle at 105% 20%,transparent 0 46%,#6e716d 47% 49%,transparent 50%),
+    radial-gradient(circle at -10% 85%,#1b1c1b 0 44%,#7c7f7b 45% 47%,#131413 48%),
+    conic-gradient(from 200deg,#fff,#ffd0d0 .07turn,#cfe2ff .18turn,#fff .3turn,#d4ffd8 .5turn,#fff .62turn,#ffe3b8 .8turn,#fff);
+  box-shadow:0 9px 18px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,90,90,.35), inset 0 0 0 2px rgba(90,130,255,.22)}
+html .fab svg{stroke:#fff; stroke-width:1.6; stroke-linecap:round; filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
+.fab:active{transform:scale(.94); background-color:transparent}
+
+/* + button: see-through centre, metal rim only */
+.fab,html.lite .fab,html.modal .fab{background:none; background-image:none; background-color:transparent; border:0; box-shadow:none; position:fixed}
+.fab::before{content:""; position:absolute; inset:0; border-radius:50%; pointer-events:none;
+  background:conic-gradient(from 200deg,#fff,#ffd0d0 .07turn,#cfe2ff .18turn,#fff .3turn,#d4ffd8 .5turn,#fff .62turn,#ffe3b8 .8turn,#fff);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px)); mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px))}
+.fab:active{background:none; background-color:transparent}
+
+/* tab bar + pill: see-through, metal rim only */
+.navbg,html.lite .navbg{background:none; background-image:none; border:0; box-shadow:none}
+.navbg::before,.pill::before{content:""; position:absolute; inset:0; pointer-events:none; box-sizing:border-box;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.navbg::before{border-radius:34px; padding:1.5px; background:linear-gradient(150deg,rgba(255,255,255,.75),rgba(255,255,255,.16) 38%,rgba(255,255,255,.12) 62%,rgba(255,255,255,.5))}
+.pill{background:none; background-image:none; border:0; box-shadow:none}
+.pill.grab{background:none; box-shadow:none}
+.pill::before{border-radius:999px; padding:2.5px;
+  background:conic-gradient(from 200deg,#fff,#ffd0d0 .07turn,#cfe2ff .18turn,#fff .3turn,#d4ffd8 .5turn,#fff .62turn,#ffe3b8 .8turn,#fff)}
+.pill::after{display:none}
+nav button{color:rgba(255,255,255,.7)}
+
+
+/* ===== tab bar background ===== */
+.navbg,html.lite .navbg{background:#151515; background-image:none}
+html[data-mode="light"] .navbg,html[data-mode="light"].lite .navbg{background:#EDEDED; background-image:none}
+
+#reports>.kv{margin-top:18px}
+
+
+/* =====================================================================
+   LIQUID-METAL RIMS on every square border (corners stay square)
+   ===================================================================== */
+.acbtn,.shbtn,.round,.chip,.btn,.seg button,.datebtn,.x,.panelSheet .x,.panelSheet .datebtn,input,textarea,.panelSheet input,
+.empty,.thcard,.dpnav,.dpbtn,.dpcard,.toast{
+  border-style:solid; border-color:transparent; border-width:1.5px; border-image:var(--metal) 1}
+/* stat grid: full 4-side liquid-metal frame (pseudo ring) + metal dividers */
+.kv{position:relative; border:0; border-image:none}
+.kv::after{content:""; position:absolute; inset:0; padding:1.5px; background:var(--metal); pointer-events:none; z-index:2;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.kv div,.kv div.hasrg{border:0; border-image:none}
+.kv div:nth-child(odd):nth-last-child(n+3){border:solid transparent; border-width:0 1px 1px 0; border-image:var(--metal-soft) 1}
+.kv div:nth-child(odd):nth-last-child(-n+2){border:solid transparent; border-width:0 1px 0 0; border-image:var(--metal-soft) 1}
+.kv div:nth-child(even):nth-last-child(n+3){border:solid transparent; border-width:0 0 1px 0; border-image:var(--metal-soft) 1}
+.cell{border-style:solid; border-color:transparent; border-width:1px; border-image:var(--metal-soft) 1}
+.top,.hero,.card,.dayhead,.panel,.goal{border-image:var(--metal-soft) 1}
+.top{border-bottom-width:1px; border-bottom-style:solid}
+.trade,.srow,.acrow{border-image:var(--metal-soft) 1}
+.panelSheet,html.lite .panelSheet{border-top:1.5px solid transparent; border-image:var(--metal) 1}
+/* filled / coloured states keep their own colour */
+.chip[aria-pressed="true"],.seg button[aria-pressed="true"],.panelSheet .chip[aria-pressed="true"],.panelSheet .seg button[aria-pressed="true"],
+.btn.primary,.panelSheet .btn.primary,.btn.danger,.panelSheet .btn.danger,
+#f-buy[aria-pressed="true"],#f-sell[aria-pressed="true"],#f-profit[aria-pressed="true"],#f-loss[aria-pressed="true"],
+.cell.blank,.cell.has,.cell.w,.cell.l,.dpday.sel{border-image:none}
+.cell.blank{border-color:transparent}
+.cell.w{border:1px solid rgba(var(--win-rgb),.4)} .cell.l{border:1px solid rgba(var(--loss-rgb),.4)}
+.btn.primary,.panelSheet .btn.primary{border:1.5px solid var(--btn)}
+.btn.danger,.panelSheet .btn.danger{border:1.5px solid var(--loss)}
+#f-buy[aria-pressed="true"],#f-profit[aria-pressed="true"]{border:1.5px solid var(--win)}
+#f-sell[aria-pressed="true"],#f-loss[aria-pressed="true"]{border:1.5px solid var(--loss)}
+input:focus,textarea:focus{border-image:none; border-color:var(--ink)}
+.thcard[aria-pressed="true"]{border-image:none; border:1.5px solid var(--ink)}
+
+/* ===== WHITE theme ===== */
+html[data-mode="light"] nav button{color:rgba(0,0,0,.55); text-shadow:none}
+html[data-mode="light"] nav button[aria-current="page"],html[data-mode="light"] nav button.hot{color:#000}
+html[data-mode="light"] .navbg::before{background:linear-gradient(150deg,rgba(0,0,0,.8),rgba(0,0,0,.18) 38%,rgba(0,0,0,.12) 62%,rgba(0,0,0,.6))}
+html[data-mode="light"] .pill::before,html[data-mode="light"] .fab::before{background:conic-gradient(from 200deg,#111,#c98a8a .07turn,#8aa6d6 .18turn,#111 .3turn,#8ac99a .5turn,#111 .62turn,#d9a86a .8turn,#111)}
+html[data-mode="light"] .ring,html[data-mode="light"].lite .ring{border-color:rgba(0,0,0,.45)}
+html[data-mode="light"] .fab,html[data-mode="light"] .fab svg{color:#111}
+html[data-mode="light"] html .fab svg,html[data-mode="light"] .fab svg{stroke:#111; filter:none}
+html[data-mode="light"] .scrim,html[data-mode="light"] .dpscrim{background:rgba(0,0,0,.35)}
+html[data-mode="light"] .cell.has .d,html[data-mode="light"] .cell.has .a{opacity:1}
+html[data-mode="light"] .sub,html[data-mode="light"] .trade .nt{color:var(--muted)}
+
+
+/* ===== liquid-metal numbers + curve, eye button ===== */
+:root{--m0:#e9ecea; --m1:#8b908e; --m2:#ffffff; --m3:#ffd4d4; --m4:#c6dcff; --m5:#ffffff; --m6:#9aa09d; --m7:#f4f4f4; --m8:#bfc4c2}
+html[data-mode="light"]{--m0:#333; --m1:#777; --m2:#111; --m3:#c98a8a; --m4:#8aa6d6; --m5:#111; --m6:#6b6f6d; --m7:#222; --m8:#555}
+.big,.big.win,.big.loss{width:fit-content; background:linear-gradient(105deg,var(--m0) 0%,var(--m1) 16%,var(--m2) 30%,var(--m3) 38%,var(--m4) 46%,var(--m5) 55%,var(--m6) 72%,var(--m7) 88%,var(--m8) 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent; -webkit-text-fill-color:transparent}
+.hero{position:relative}
+.eye{position:absolute; right:0; top:34px; width:38px; height:38px; display:grid; place-items:center; padding:0; background:none; color:var(--ink); cursor:pointer;
+  border:0; border-image:none; border-radius:0}
+.eye svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.3; stroke-linecap:butt; stroke-linejoin:miter}
+#shCanvas{background:transparent !important}
+
+/* ---- app-wide font choice (Settings > Font) ---- */
+#fontSeg{grid-template-columns:repeat(3,1fr)}
+html[data-font="mono"]{--serif:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono","Courier New",monospace; --mono:var(--serif)}
+html[data-font="sans"]{--serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; --mono:var(--serif)}
+html[data-font="light"]{--serif:"sans-serif-light",-apple-system,"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif; --mono:var(--serif)}
+html[data-font="bold"]{--serif:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; --mono:var(--serif)}
+html[data-font="light"] body, html[data-font="light"] body *:not(.fpv){font-weight:300 !important}
+html[data-font="bold"] body, html[data-font="bold"] body *:not(.fpv){font-weight:700 !important}
+
+/* scroll indicator = tiny soft green dot */
+html #sbar,html[data-mode="dark"] #sbar,html[data-mode="light"] #sbar{
+  left:3px; width:3px; height:3px; border-radius:50%;
+  background:rgba(80,200,120,.55); box-shadow:0 0 3px rgba(80,200,120,.35)}
 </style>
 </head>
 <body>
@@ -812,7 +1058,6 @@ body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
       <div id="curve" class="curve"></div>
     </div>
     <dl id="stats" class="kv"></dl>
-    <h2>Trades</h2>
     <div id="list"></div>
   </section>
 
@@ -869,6 +1114,18 @@ body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
       <div class="btns"><button class="btn" id="themeBtn"></button></div>
     </div>
 
+    <div class="panel" id="fontPanel">
+      <h2 style="margin-top:0">Font</h2>
+      <p>Change the font of the whole app and the P&amp;L cards.</p>
+      <div class="seg seg3" id="fontSeg" role="group" aria-label="Font">
+        <button type="button" class="fpv" data-act="font" data-v="default" aria-pressed="true" style="font-family:'Noto Serif',Georgia,'Times New Roman',serif">Classic</button>
+        <button type="button" class="fpv" data-act="font" data-v="mono" aria-pressed="false" style="font-family:ui-monospace,'SF Mono',Menlo,Consolas,'Roboto Mono','Courier New',monospace">Mono</button>
+        <button type="button" class="fpv" data-act="font" data-v="sans" aria-pressed="false" style="font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif">Sans</button>
+        <button type="button" class="fpv" data-act="font" data-v="light" aria-pressed="false" style="font-family:'sans-serif-light',-apple-system,'Helvetica Neue',Roboto,Arial,sans-serif;font-weight:300">Light</button>
+        <button type="button" class="fpv" data-act="font" data-v="bold" aria-pressed="false" style="font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-weight:800">Bold</button>
+      </div>
+    </div>
+
     <div class="panel" id="bgPanel">
       <h2 style="margin-top:0">Backgrounds</h2>
       <p>Put your own picture behind the whole app and on the P&amp;L cards you share. Use the slider to make the picture darker or lighter.</p>
@@ -909,13 +1166,13 @@ body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
   <span class="navbg" aria-hidden="true"></span>
   <span class="pill" id="pill" aria-hidden="true"></span>
   <button data-act="tab" data-v="journal" aria-current="page">
-    <svg viewBox="0 0 24 24"><path d="M3 15c2.5 0 3-5 5.5-5S11 17 14 17s2.5-9 7-9"/></svg>Journal
+    <svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.6 3.5 5v13.5c3.5-.4 6.500 0 8.500 1.500 2-1.500 5-1.900 8.500-1.500V5C17 4.600 14 5 12 6.500zM12 6.500v13"/></svg>Journal
   </button>
   <button data-act="tab" data-v="reports">
-    <svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>Reports
+    <svg viewBox="0 0 24 24"><path d="M3.500 20.500h17M6.500 20.500v-7M12 20.500V5.500M17.500 20.500v-10.500"/></svg>Reports
   </button>
   <button data-act="tab" data-v="data">
-    <svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>Data
+    <svg viewBox="0 0 24 24"><path d="M3.500 5h17v4.500h-17zM5 9.500v10h14v-10M9.500 13.500h5"/></svg>Settings
   </button>
 </nav>
 
@@ -987,6 +1244,21 @@ body,input,textarea,button{-webkit-text-stroke:.35px currentColor}
       </div>
       <div class="calc" id="shHint" aria-live="polite"></div>
       <canvas id="shCanvas" width="1080" height="1350" aria-label="Share card preview"></canvas>
+      <div class="shopt">
+        <div class="shlbl">Size</div>
+        <div class="seg seg3" id="shRatio" role="group" aria-label="Card size">
+          <button type="button" data-act="shratio" data-v="45" aria-pressed="true">4:5</button>
+          <button type="button" data-act="shratio" data-v="11" aria-pressed="false">1:1</button>
+          <button type="button" data-act="shratio" data-v="43" aria-pressed="false">4:3</button>
+        </div>
+        <div class="shlbl">Corners</div>
+        <div class="seg seg4" id="shRound" role="group" aria-label="Corner style">
+          <button type="button" data-act="shround" data-v="none" aria-pressed="true">Square</button>
+          <button type="button" data-act="shround" data-v="s" aria-pressed="false">Soft</button>
+          <button type="button" data-act="shround" data-v="m" aria-pressed="false">Round</button>
+          <button type="button" data-act="shround" data-v="l" aria-pressed="false">Extra</button>
+        </div>
+      </div>
       <div class="g2">
         <button class="btn primary" type="button" id="shShare">Share</button>
         <button class="btn" type="button" id="shSave">Save image</button>
@@ -1068,6 +1340,24 @@ const pts = n => n == null ? '' : sgn(n) + fixed(n, 1) + ' pts';
 const rtxt = n => n == null ? '\u2014' : sgn(n) + fixed(n, 1) + 'R';
 const rrtxt = n => n == null ? '\u2014' : '1:' + fixed(n, 1);
 const compact = n => { const a = Math.abs(n); return sgn(n) + (a >= 1000 ? (a / 1000).toFixed(1) + 'k' : Math.round(a)); };
+
+/* ---------- hide / show amounts (eye button) ---------- */
+let MASK = false; try { MASK = localStorage.getItem('pnl-mask') === '1'; } catch (e) {}
+const EYE_OPEN = '<path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/>';
+const eyeBtn = () => `<button class="eye" data-act="eye" aria-label="${MASK ? 'Show' : 'Hide'} amounts" aria-pressed="${MASK}"><svg viewBox="0 0 24 24" aria-hidden="true">${EYE_OPEN}${MASK ? '<path d="M4 20L20 4"/>' : ''}</svg></button>`;
+function applyMask() {
+  document.documentElement.classList.toggle('mask', MASK);
+  if (!MASK) return;
+  const RE = /[+\u2212-]?\$\s?[\d,]+(?:\.\d+)?/g;
+  ['hero', 'stats', 'list', 'reports'].forEach(id => {
+    const root = document.getElementById(id); if (!root) return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), nodes = []; let n;
+    while ((n = w.nextNode())) nodes.push(n);
+    nodes.forEach(t => { const v = t.nodeValue.replace(RE, '\u2022\u2022\u2022\u2022'); if (v !== t.nodeValue) t.nodeValue = v; });
+    root.querySelectorAll('.cell .a').forEach(e => { e.textContent = '\u2022\u2022\u2022'; });
+    root.querySelectorAll('[aria-label]').forEach(e => { if (e.classList.contains('cell')) e.removeAttribute('aria-label'); });
+  });
+}
 const parseDay = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
 const dayLabel = s => parseDay(s).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 const monthLabel = ym => { const [y, m] = ym.split('-').map(Number); return new Date(y, m - 1, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }); };
@@ -1186,19 +1476,9 @@ function ringVals(tr, st) {
 }
 
 function ringHtml(i, p, anim) {
-  /* one design for every tile: radial tick ring, each tile with its own colour */
-  const COL = ['var(--win-rgb)', 'var(--tint)', 'var(--rg-c)', 'var(--rg-d)', 'var(--rg-a)', 'var(--loss-rgb)', 'var(--rg-b)', 'var(--rg-e)'], col = COL[i];
-  const ptAt = (a, r) => { const t = a * Math.PI / 180; return [26 + r * Math.sin(t), 26 - r * Math.cos(t)]; };
-  const f = n => n.toFixed(2), q = p == null ? 0 : p, N = 36, k = q > 0.003 ? Math.max(1, Math.round(q * N)) : 0;
-  const label = p == null ? '\u2014' : Math.round(q * 100) + '%';
-  let off = '', lit = '';
-  for (let j = 0; j < N; j++) {
-    const a = j * 360 / N, [x1, y1] = ptAt(a, 15.5), [x2, y2] = ptAt(a, 23);
-    const ln = `x1="${f(x1)}" y1="${f(y1)}" x2="${f(x2)}" y2="${f(y2)}"`;
-    if (j < k) lit += `<line class="rgtk${anim ? ' rgpop' : ''}" ${ln} style="stroke:rgb(${col});opacity:${(.4 + .6 * (k > 1 ? j / (k - 1) : 1)).toFixed(2)}${anim ? ';animation-delay:' + (j * 16) + 'ms' : ''}"/>`;
-    else off += `<line class="rgtk" ${ln}/>`;
-  }
-  return `<span class="rgw" style="--gl:${col}" aria-hidden="true"><svg viewBox="0 0 52 52">${off}<g class="rgfx">${lit}</g><text class="rgt${label.length > 3 ? ' sm' : ''}" x="26" y="26" dy=".35em" text-anchor="middle">${label}</text></svg></span>`;
+  /* classic: a thin progress line + small percentage */
+  const q = p == null ? 0 : p, label = p == null ? '\u2014' : Math.round(q * 100) + '%';
+  return `<span class="rgw" aria-hidden="true"><b>${label}</b><i style="width:${Math.round(q * 100)}%"></i></span>`;
 }
 
 function curveSvg(tr) {
@@ -1217,14 +1497,10 @@ function curveSvg(tr) {
   const ex = x(pts.length - 1), ey = y(pts[pts.length - 1]);
   const anim = !S.drawn; S.drawn = true;
   return `<svg viewBox="0 0 ${W} ${H}" class="${anim ? 'draw' : ''}" role="img" aria-label="Equity curve over ${tr.length} trades">
-    <defs>
-      <linearGradient id="fade" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--curve)" stop-opacity=".16"/><stop offset="1" stop-color="var(--curve)" stop-opacity="0"/></linearGradient>
-    </defs>
+    <defs><linearGradient id="mtl" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="${W}" y2="0">${[0,.16,.3,.38,.46,.55,.72,.88,1].map((o, i) => `<stop offset="${o}" style="stop-color:var(--m${i})"/>`).join('')}</linearGradient></defs>
     <line x1="0" x2="${W}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 5"/>
-    <path d="${area}" fill="url(#fade)"/>
-    <path class="line" d="${d}" pathLength="1" fill="none" stroke="var(--curve)" stroke-opacity=".16" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-    <path class="line" d="${d}" pathLength="1" fill="none" stroke="var(--curve)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="4.2" fill="var(--curve)"/>
+    <path class="line" d="${d}" pathLength="1" fill="none" stroke="url(#mtl)" stroke-width="1.8" stroke-linejoin="round"/>
+    <circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="2.8" fill="url(#mtl)"/>
   </svg>`;
 }
 
@@ -1240,9 +1516,40 @@ function tradeRow(t) {
   </button>`;
 }
 
+function summaryHtml(list, all) {
+  /* By symbol / By session / All months */
+  const bySym = {}; list.forEach(t => (bySym[t.symbol] = bySym[t.symbol] || []).push(t));
+  const symRows = Object.keys(bySym).sort().map(s => {
+    const x = stats(bySym[s]);
+    return `<div class="srow" style="cursor:default"><span class="s">${symIcon(s)}<span>${esc(s)}</span></span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
+  }).join('');
+  const bySes = {}; list.forEach(t => { if (t.session) (bySes[t.session] = bySes[t.session] || []).push(t); });
+  const sesRows = SESS.filter(n => bySes[n]).map(n => {
+    const x = stats(bySes[n]);
+    return `<div class="srow" style="cursor:default"><span class="s">${n}</span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
+  }).join('');
+  const months = {}; all.forEach(t => (months[t.date.slice(0, 7)] = months[t.date.slice(0, 7)] || []).push(t));
+  const monthRows = Object.keys(months).sort().reverse().map(k => {
+    const x = stats(months[k]);
+    return `<button class="srow" data-act="month" data-m="${k}"><span class="s">${monthLabel(k)}</span><span class="n">${x.n} trade${x.n === 1 ? '' : 's'}</span><span class="v ${cls(x.net)}">${money(x.net)}</span></button>`;
+  }).join('');
+  return `${symRows ? `<h2>By symbol</h2>${symRows}` : ''}${sesRows ? `<h2>By session</h2>${sesRows}` : ''}${monthRows ? `<h2>All months</h2>${monthRows}` : ''}`;
+}
+
+function historyHtml(list) {
+  /* trade history grouped by day, newest first */
+  const byDay = {}; list.slice().reverse().forEach(t => (byDay[t.date] = byDay[t.date] || []).push(t));
+  const keys = Object.keys(byDay).sort().reverse();
+  if (!keys.length) return '';
+  return '<h2>Trades</h2>' + keys.map(d => {
+    const net = sum(byDay[d].map(t => t.pnl));
+    return `<div class="dayhead"><span>${dayLabel(d)}</span><span class="${cls(net)}">${money(net)}</span></div>${byDay[d].map(tradeRow).join('')}`;
+  }).join('');
+}
+
 function renderJournal() {
   const tr = visible(), st = stats(tr);
-  $('hero').innerHTML = `<div class="big ${cls(st.net)}">${money(st.net).replace('+', '')}</div>
+  $('hero').innerHTML = `${eyeBtn()}<div class="big ${cls(st.net)}">${money(st.net).replace('+', '')}</div>
     <div class="sub">${tr.length ? tr.length + ' trade' + (tr.length === 1 ? '' : 's') + (S.symbol === 'ALL' ? '' : ' \u00b7 ' + esc(S.symbol)) : 'No trades yet'}</div>`;
   $('curve').innerHTML = curveSvg(tr);
   const rv = tr.length ? ringVals(tr, st) : [], rgAnim = tr.length && !S.rgDrawn; if (tr.length) S.rgDrawn = true;
@@ -1260,11 +1567,8 @@ function renderJournal() {
     $('list').innerHTML = `<p class="empty">Your trades will show here. Tap + to add your first one, or <button class="link" data-act="sample">load sample trades</button> to see how it looks.</p>`;
     return;
   }
-  const byDay = {}; tr.slice().reverse().forEach(t => (byDay[t.date] = byDay[t.date] || []).push(t));
-  $('list').innerHTML = Object.keys(byDay).sort().reverse().map(d => {
-    const net = sum(byDay[d].map(t => t.pnl));
-    return `<div class="dayhead"><span>${dayLabel(d)}</span><span class="${cls(net)}">${money(net)}</span></div>${byDay[d].map(tradeRow).join('')}`;
-  }).join('');
+  $('list').innerHTML = summaryHtml(tr, tr);
+  applyMask();
 }
 
 function renderReports() {
@@ -1286,29 +1590,11 @@ function renderReports() {
   for (let d = 1; d <= dim; d++) {
     const key = S.month + '-' + String(d).padStart(2, '0');
     if (dayNet[key] != null) {
-      const n = dayNet[key], a = '0.26';
-      cells += `<button class="cell has ${n >= 0 ? 'w' : 'l'} ${S.day === key ? 'sel' : ''}" data-act="day" data-d="${key}" style="background:rgba(var(${n >= 0 ? '--win-rgb' : '--loss-rgb'}),${a})" aria-label="${dayLabel(key)} ${money(n)}">
+      const n = dayNet[key], a = '1';
+      cells += `<button class="cell has ${n >= 0 ? 'w' : 'l'} ${S.day === key ? 'sel' : ''}" data-act="day" data-d="${key}" aria-label="${dayLabel(key)} ${money(n)}">
         <span class="d">${d}</span><span class="a">${compact(n)}</span></button>`;
     } else cells += `<div class="cell"><span class="d">${d}</span></div>`;
   }
-
-  const bySym = {}; mt.forEach(t => (bySym[t.symbol] = bySym[t.symbol] || []).push(t));
-  const symRows = Object.keys(bySym).sort().map(s => {
-    const x = stats(bySym[s]);
-    return `<div class="srow" style="cursor:default"><span class="s">${symIcon(s)}<span>${esc(s)}</span></span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
-  }).join('');
-
-  const bySes = {}; mt.forEach(t => { if (t.session) (bySes[t.session] = bySes[t.session] || []).push(t); });
-  const sesRows = SESS.filter(n => bySes[n]).map(n => {
-    const x = stats(bySes[n]);
-    return `<div class="srow" style="cursor:default"><span class="s">${n}</span><span class="n">${x.n} \u00b7 ${x.winRate == null ? '\u2014' : Math.round(x.winRate * 100) + '%'} won</span><span class="v ${cls(x.net)}">${money(x.net)}</span></div>`;
-  }).join('');
-
-  const months = {}; tr.forEach(t => (months[t.date.slice(0, 7)] = months[t.date.slice(0, 7)] || []).push(t));
-  const monthRows = Object.keys(months).sort().reverse().map(k => {
-    const x = stats(months[k]);
-    return `<button class="srow" data-act="month" data-m="${k}"><span class="s">${monthLabel(k)}</span><span class="n">${x.n} trade${x.n === 1 ? '' : 's'}</span><span class="v ${cls(x.net)}">${money(x.net)}</span></button>`;
-  }).join('');
 
   let detail = '';
   if (S.day && byDay[S.day]) {
@@ -1321,7 +1607,7 @@ function renderReports() {
       <div class="ttl">${monthLabel(S.month)}</div>
       <button class="round" data-act="mnav" data-v="1" aria-label="Next month">&#8250;</button>
     </div>
-    <div class="card hero"><div class="lbl">Net P&amp;L</div>
+    <div class="card hero">${eyeBtn()}<div class="lbl">Net P&amp;L</div>
     <div class="big ${cls(st.net)}">${money(st.net).replace('+', '')}</div>
     <div class="sub">${mt.length ? mt.length + ' trade' + (mt.length === 1 ? '' : 's') + ' in ' + days.length + ' day' + (days.length === 1 ? '' : 's') : 'No trades this month'}</div>
     ${goalHtml(st.net)}</div>
@@ -1335,9 +1621,8 @@ function renderReports() {
     ]) : ''}</dl>
     <div class="cal">${cells}</div>
     ${detail}
-    ${symRows ? `<h2>By symbol</h2>${symRows}` : ''}
-    ${sesRows ? `<h2>By session</h2>${sesRows}` : ''}
-    ${monthRows ? `<h2>All months</h2>${monthRows}` : ''}`;
+    ${historyHtml(mt)}`;
+  applyMask();
 }
 
 function liteState() { try { return localStorage.getItem('pnl-lite'); } catch (e) { return null; } }
@@ -1451,7 +1736,7 @@ function movePill() { try { LG.sync(); } catch (err) { console.error(err); } }
 function render() {
   ['journal', 'reports', 'data'].forEach(t => $('s-' + t).hidden = S.tab !== t);
   document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-current', b.dataset.v === S.tab ? 'page' : 'false'));
-  $('title').textContent = { journal: 'Journal', reports: 'Reports', data: 'Data' }[S.tab];
+  $('title').textContent = { journal: 'Journal', reports: 'Reports', data: 'Settings' }[S.tab];
   $('fab').hidden = S.tab === 'data'; $('shareBtn').hidden = S.tab === 'data';
   movePill();
   renderChips();
@@ -1695,9 +1980,17 @@ async function clearAll() {
 
 /* ---------- settings: goal, balance, name, hide-$ ---------- */
 const SESS = ['Asia', 'London', 'New York'];
-const SET = { unit: '$', goal: null, balance: null, name: '', hide: false };
+const SET = { unit: '$', goal: null, balance: null, name: '', hide: false, cardRatio: '45', cardRound: 'none', font: 'default' };
 try { const v = JSON.parse(localStorage.getItem('pnl-settings') || 'null'); if (v && typeof v === 'object') Object.assign(SET, v); } catch (e) {}
 function saveSet() { try { localStorage.setItem('pnl-settings', JSON.stringify(SET)); } catch (e) {} }
+const FONT_IDS = ['default', 'mono', 'sans', 'light', 'bold'];
+function applyFont() {
+  if (FONT_IDS.indexOf(SET.font) < 0) SET.font = 'default';
+  document.documentElement.setAttribute('data-font', SET.font);
+  const g = document.getElementById('fontSeg');
+  if (g) g.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === SET.font));
+}
+applyFont();
 const pctOf = n => SET.balance > 0 ? n / SET.balance * 100 : null;
 
 /* ---------- custom backgrounds: whole app + share card ---------- */
@@ -1851,8 +2144,8 @@ function cardData() {
             ['Trades', String(st.n)], ['Avg result', rtxt(st.avgR), st.avgR]] };
 }
 
-const CARD_DEF = { bg: '#000000', ink: '#FFFFFF', muted: '#B2BDC8', line: '#1F262D', win: '#4FD1B5', loss: '#FF6B81',
-  curve: '#F2F5F7', curveRgb: '242,245,247', winRgb: '79,209,181', lossRgb: '255,107,129', glow: '255,255,255' };
+const CARD_DEF = { bg: '#000000', ink: '#FFFFFF', muted: '#B2BDC8', line: '#1F262D', win: '#00CA19', loss: '#E24A58',
+  curve: '#F2F5F7', curveRgb: '242,245,247', winRgb: '0,202,25', lossRgb: '226,74,88', glow: '255,255,255' };
 let CARD = CARD_DEF;
 /* share card follows the chosen theme (Default keeps the original black card) */
 function loadCard() {
@@ -1865,13 +2158,39 @@ function loadCard() {
     glow: v('--tint') || CARD_DEF.glow };
 }
 const MONO = '"Cutive Mono","Courier New",Courier,monospace';
+const SANS = '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+const CARD_FONTS = {
+  default: { fam: '"Noto Serif",Georgia,"Times New Roman",serif', w: '' },
+  mono:  { fam: 'ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono","Courier New",monospace', w: '' },
+  sans:  { fam: SANS, w: '500 ' },
+  light: { fam: '"sans-serif-light",-apple-system,"Helvetica Neue","Segoe UI",Roboto,Arial,sans-serif', w: '300 ' },
+  bold:  { fam: SANS, w: '800 ' }
+};
+const CARD_SIZES = { '45': [1080, 1350], '11': [1080, 1080], '43': [1440, 1080] };
+const CARD_RADII = { none: 0, s: 36, m: 72, l: 120 };
+const FN = px => { const f = CARD_FONTS[SET.font] || CARD_FONTS.default; return f.w + px + 'px ' + f.fam; };
+
+function rrect(ctx, x, y, w, h, r) {
+  r = Math.max(0, Math.min(r, w / 2, h / 2));
+  ctx.beginPath(); ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
 
 function drawCard(cv, d) {
-  const W = 1080, H = 1350, X = 72, C = CARD, T = 620, B = 930;
+  const sz = CARD_SIZES[SET.cardRatio] || CARD_SIZES['45'], W = sz[0], H = sz[1], land = W > H, sq = W === H;
+  const X = 72, C = CARD, R = CARD_RADII[SET.cardRound] || 0;
+  /* per-size layout: vertical positions of every block */
+  const Y = land ? { ic: 64, nm: 110, ti: 214, tiS: 46, rg: 258, rgS: 28, bg: 400, bgS: 150, sb: 450, sbS: 30, T: 150, B: 830, st: 560, sr: 160, lo: 48, vo: 112, lp: 28, vp: 54, ft: 1038, bw: 568 }
+    : sq ? { ic: 64, nm: 110, ti: 214, tiS: 46, rg: 258, rgS: 28, bg: 414, bgS: 140, sb: 462, sbS: 30, T: 506, B: 716, st: 752, sr: 128, lo: 42, vo: 98, lp: 26, vp: 50, ft: 1038, bw: W - 2 * X }
+    : { ic: 92, nm: 138, ti: 262, tiS: 50, rg: 312, rgS: 30, bg: 500, bgS: 176, sb: 556, sbS: 32, T: 620, B: 930, st: 984, sr: 150, lo: 48, vo: 112, lp: 28, vp: 54, ft: 1318, bw: W - 2 * X };
+  const T = Y.T, B = Y.B, LX = land ? 720 : X, RX = W - X;
   cv.width = W; cv.height = H;
+  cv.style.border = R ? '0' : '';
   const ctx = cv.getContext('2d');
   const tone = v => v > 0 ? C.win : v < 0 ? C.loss : C.ink;
-  const fit = (txt, size, max) => { let f = size; ctx.font = f + 'px ' + MONO; while (ctx.measureText(txt).width > max && f > 18) { f -= 2; ctx.font = f + 'px ' + MONO; } };
+  const fit = (txt, size, max) => { let f = size; ctx.font = FN(f); while (ctx.measureText(txt).width > max && f > 18) { f -= 2; ctx.font = FN(f); } };
+  ctx.save(); rrect(ctx, 0, 0, W, H, R); ctx.clip();
   ctx.fillStyle = C.bg; ctx.fillRect(0, 0, W, H);
   if (BG.cardImg) {
     const im = BG.cardImg, sc = Math.max(W / im.naturalWidth, H / im.naturalHeight), iw = im.naturalWidth * sc, ih = im.naturalHeight * sc;
@@ -1879,30 +2198,31 @@ function drawCard(cv, d) {
     ctx.fillStyle = bgShade(bgLvl('card')); ctx.fillRect(0, 0, W, H);
   }
   const gc = d.tone > 0 ? C.winRgb : d.tone < 0 ? C.lossRgb : C.glow;
-  const g = ctx.createRadialGradient(W / 2, 380, 20, W / 2, 380, 820);
+  const gx = land ? 420 : W / 2, gy = land ? 330 : (H === 1350 ? 380 : Math.round(H * .28));
+  const g = ctx.createRadialGradient(gx, gy, 20, gx, gy, 820);
   g.addColorStop(0, 'rgba(' + gc + ',.18)'); g.addColorStop(1, 'rgba(' + gc + ',0)');
   ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
 
   // brand + title
-  ctx.save(); ctx.translate(X, 92); ctx.scale(2.7, 2.7);
+  ctx.save(); ctx.translate(X, Y.ic); ctx.scale(2.7, 2.7);
   ctx.strokeStyle = C.ink; ctx.lineWidth = 1.8; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.stroke(new Path2D('M3 15c2.5 0 3-5 5.5-5S11 17 14 17s2.5-9 7-9')); ctx.restore();
-  ctx.fillStyle = C.ink; fit(d.name, 38, W - 2 * X - 80); ctx.fillText(d.name, X + 76, 138);
-  ctx.fillStyle = C.ink; fit(d.title, 50, W - 2 * X); ctx.fillText(d.title, X, 262);
-  ctx.fillStyle = C.muted; fit(d.range, 30, W - 2 * X); ctx.fillText(d.range, X, 312);
+  ctx.fillStyle = C.ink; fit(d.name, 38, Y.bw - 80); ctx.fillText(d.name, X + 76, Y.nm);
+  ctx.fillStyle = C.ink; fit(d.title, Y.tiS, Y.bw); ctx.fillText(d.title, X, Y.ti);
+  ctx.fillStyle = C.muted; fit(d.range, Y.rgS, Y.bw); ctx.fillText(d.range, X, Y.rg);
 
   // big number + sub
-  ctx.fillStyle = d.empty ? C.muted : tone(d.tone); fit(d.big, 176, W - 2 * X); ctx.fillText(d.big, X, 500);
-  ctx.fillStyle = C.muted; fit(d.sub, 32, W - 2 * X); ctx.fillText(d.sub, X, 556);
+  ctx.fillStyle = d.empty ? C.muted : tone(d.tone); fit(d.big, Y.bgS, Y.bw); ctx.fillText(d.big, X, Y.bg);
+  ctx.fillStyle = C.muted; fit(d.sub, Y.sbS, Y.bw); ctx.fillText(d.sub, X, Y.sb);
 
   if (d.kind === 'period') {
-    const p = d.curve, x0 = 40, x1 = W - 40;
+    const p = d.curve, x0 = land ? LX : 40, x1 = land ? RX : W - 40;
     const lo = Math.min(0, ...p), hi = Math.max(0, ...p), span = (hi - lo) || 1;
     const cx = i => x0 + (x1 - x0) * (i / (p.length - 1 || 1));
     const cy = v => T + 20 + (B - T - 40) * (1 - (v - lo) / span);
     ctx.setLineDash([6, 12]); ctx.strokeStyle = C.line; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(0, cy(0)); ctx.lineTo(W, cy(0)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(land ? x0 : 0, cy(0)); ctx.lineTo(land ? x1 : W, cy(0)); ctx.stroke(); ctx.setLineDash([]);
     if (p.length > 1) {
       const path = new Path2D(); path.moveTo(cx(0), cy(p[0]));
       for (let i = 1; i < p.length; i++) { const mx = (cx(i - 1) + cx(i)) / 2; path.bezierCurveTo(mx, cy(p[i - 1]), mx, cy(p[i]), cx(i), cy(p[i])); }
@@ -1917,42 +2237,45 @@ function drawCard(cv, d) {
   } else {
     const L = d.levels;
     if (L.length < 2) {
-      ctx.fillStyle = C.muted; ctx.font = '30px ' + MONO; ctx.textAlign = 'center';
-      ctx.fillText('Add entry and exit prices to see the trade map', W / 2, (T + B) / 2); ctx.textAlign = 'left';
+      ctx.fillStyle = C.muted; ctx.font = FN(land ? 26 : 30); ctx.textAlign = 'center';
+      ctx.fillText('Add entry and exit prices to see the trade map', land ? (LX + RX) / 2 : W / 2, (T + B) / 2); ctx.textAlign = 'left';
     } else {
       const vs = L.map(l => l.v), lo = Math.min(...vs), hi = Math.max(...vs), span = (hi - lo) || 1, Y0 = T + 24, Y1 = B - 24;
       L.forEach(l => { l.y = Y0 + (Y1 - Y0) * (1 - (l.v - lo) / span); });
-      const lx0 = X + 130, lx1 = W - X - 250;
+      const lx0 = LX + (land ? 120 : 130), lx1 = RX - (land ? 190 : 250);
       const en = L.find(l => l.k === 'Entry'), ex = L.find(l => l.k === 'Exit');
       if (en && ex) { ctx.fillStyle = 'rgba(' + (d.tone >= 0 ? C.winRgb : C.lossRgb) + ',.14)'; ctx.fillRect(lx0, Math.min(en.y, ex.y), lx1 - lx0, Math.abs(en.y - ex.y)); }
       ctx.lineCap = 'butt';
       L.forEach(l => { ctx.setLineDash(l.dash ? [14, 12] : []); ctx.strokeStyle = l.c; ctx.lineWidth = l.k === 'Exit' ? 6 : 3; ctx.beginPath(); ctx.moveTo(lx0, l.y); ctx.lineTo(lx1, l.y); ctx.stroke(); });
       ctx.setLineDash([]);
+      const gap = sq ? 40 : 46;
       const ord = L.slice().sort((a, b) => a.y - b.y); let prev = -1e9;
-      ord.forEach(l => { l.ly = Math.max(l.y, prev + 46); prev = l.ly; });
+      ord.forEach(l => { l.ly = Math.max(l.y, prev + gap); prev = l.ly; });
       const last = ord.length - 1, over = ord[last].ly - (Y1 + 10);
-      if (over > 0) { ord[last].ly -= over; for (let i = last - 1; i >= 0; i--) ord[i].ly = Math.min(ord[i].ly, ord[i + 1].ly - 46); }
-      ctx.textBaseline = 'middle'; ctx.font = '30px ' + MONO;
+      if (over > 0) { ord[last].ly -= over; for (let i = last - 1; i >= 0; i--) ord[i].ly = Math.min(ord[i].ly, ord[i + 1].ly - gap); }
+      ctx.textBaseline = 'middle'; ctx.font = FN(sq ? 26 : 30);
       ord.forEach(l => {
-        ctx.textAlign = 'left'; ctx.fillStyle = C.muted; ctx.fillText(l.k, X, l.ly);
-        ctx.textAlign = 'right'; ctx.fillStyle = l.c; ctx.fillText(px(l.v), W - X, l.ly);
+        ctx.textAlign = 'left'; ctx.fillStyle = C.muted; ctx.fillText(l.k, LX, l.ly);
+        ctx.textAlign = 'right'; ctx.fillStyle = l.c; ctx.fillText(px(l.v), RX, l.ly);
       });
       ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
     }
   }
 
   // stats grid
-  const cols = [X, W / 2 + 20], cw = W / 2 - X - 20;
+  const cw = land ? (Y.bw - 24) / 2 : W / 2 - X - 20, cols = land ? [X, X + cw + 24] : [X, W / 2 + 20];
   d.stats.forEach((st, i) => {
-    const x = cols[i % 2], y = 984 + Math.floor(i / 2) * 150;
+    const x = cols[i % 2], y = Y.st + Math.floor(i / 2) * Y.sr;
     ctx.fillStyle = C.line; ctx.fillRect(x, y, cw, 2);
-    ctx.fillStyle = C.muted; ctx.font = '28px ' + MONO; ctx.fillText(st[0], x, y + 48);
-    ctx.fillStyle = typeof st[2] === 'number' ? tone(st[2]) : C.ink; fit(st[1], 54, cw); ctx.fillText(st[1], x, y + 112);
+    ctx.fillStyle = C.muted; ctx.font = FN(Y.lp); ctx.fillText(st[0], x, y + Y.lo);
+    ctx.fillStyle = typeof st[2] === 'number' ? tone(st[2]) : C.ink; fit(st[1], Y.vp, cw); ctx.fillText(st[1], x, y + Y.vo);
   });
 
   // footer
-  ctx.fillStyle = C.muted; ctx.font = '26px ' + MONO; ctx.fillText(fmtDate(today()), X, 1318);
-  if (d.brand) { ctx.textAlign = 'right'; ctx.fillText('PnL Journal', W - X, 1318); ctx.textAlign = 'left'; }
+  ctx.fillStyle = C.muted; ctx.font = FN(26); ctx.fillText(fmtDate(today()), X, Y.ft);
+  if (d.brand) { ctx.textAlign = 'right'; ctx.fillText('PnL Journal', W - X, Y.ft); ctx.textAlign = 'left'; }
+  ctx.restore();
+  if (R) { rrect(ctx, 1.5, 1.5, W - 3, H - 3, R - 1.5); ctx.strokeStyle = C.line; ctx.lineWidth = 3; ctx.stroke(); }
 }
 
 let shTok = 0, fontsP = null;
@@ -1965,13 +2288,14 @@ async function refreshShare() {
   $('shKinds').hidden = tradeMode;
   $('shKinds').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === SH.kind));
   $('shHide').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.v === '1') === !!SET.hide));
+  [['shRatio', SET.cardRatio], ['shRound', SET.cardRound]].forEach(r => $(r[0]).querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === r[1])));
   $('shNav').hidden = tradeMode || SH.kind === 'all';
   if (!$('shNav').hidden) $('shLabel').textContent = period().label;
   $('shTitle').textContent = tradeMode ? 'Share trade' : 'Share card';
   loadCard();
   const d = cardData(), none = !d || d.empty;
   $('shShare').disabled = none; $('shSave').disabled = none;
-  $('shHint').textContent = none ? 'No trades in this period.' : (SET.hide && !(SET.balance > 0) ? 'Tip: add your account balance in Data to show % results.' : '');
+  $('shHint').textContent = none ? 'No trades in this period.' : (SET.hide && !(SET.balance > 0) ? 'Tip: add your account balance in Settings to show % results.' : '');
   await fontsReady();
   if (tok !== shTok || !d) return;
   drawCard($('shCanvas'), d);
@@ -2176,11 +2500,12 @@ document.addEventListener('click', e => {
   const el = e.target.closest('[data-act]'); if (!el) return;
   const a = el.dataset.act, v = el.dataset.v;
   if (a === 'tab') { S.tab = v; render(); document.body.scrollTop = 0; window.scrollTo(0, 0); }
+  else if (a === 'eye') { MASK = !MASK; try { localStorage.setItem('pnl-mask', MASK ? '1' : '0'); } catch (e) {} render(); }
   else if (a === 'chip') { S.symbol = v; S.day = null; render(); }
   else if (a === 'edit') openSheet(Number(el.dataset.id));
   else if (a === 'day') { S.day = S.day === el.dataset.d ? null : el.dataset.d; renderReports(); }
   else if (a === 'mnav') { S.month = shiftMonth(S.month, Number(v)); S.day = null; renderReports(); }
-  else if (a === 'month') { S.month = el.dataset.m; S.day = null; renderReports(); document.body.scrollTop = 0; window.scrollTo(0, 0); }
+  else if (a === 'month') { S.month = el.dataset.m; S.day = null; if (S.tab !== 'reports') { S.tab = 'reports'; render(); } else renderReports(); document.body.scrollTop = 0; window.scrollTo(0, 0); }
   else if (a === 'symfill') { $('f-symbol').value = v; }
   else if (a === 'sample') loadSample();
   else if (a === 'imp') doImport(v);
@@ -2191,6 +2516,9 @@ document.addEventListener('click', e => {
   else if (a === 'shkind') { SH.kind = v; refreshShare(); }
   else if (a === 'shstep') shareStep(Number(v));
   else if (a === 'shhide') { SET.hide = v === '1'; saveSet(); refreshShare(); }
+  else if (a === 'font') { SET.font = v; saveSet(); applyFont(); if (SH.open) refreshShare(); }
+  else if (a === 'shratio') { SET.cardRatio = v; saveSet(); refreshShare(); }
+  else if (a === 'shround') { SET.cardRound = v; saveSet(); refreshShare(); }
 });
 $('fab').onclick = () => openSheet();
 $('f-datebtn').onclick = openDp;
@@ -2297,7 +2625,7 @@ bgInit();
     raf=0;
     var vh=sc.clientHeight,dh=sc.scrollHeight;
     if(dh<=vh+2){bar.classList.remove('on');return}
-    var track=vh-12,th=Math.max(28,track*vh/dh);
+    var track=vh-12,th=3;
     var y=Math.min(1,Math.max(0,sc.scrollTop/(dh-vh)))*(track-th);
     bar.style.height=th+'px'; bar.style.transform='translateY('+y+'px)';
     bar.classList.add('on'); clearTimeout(t); t=setTimeout(function(){bar.classList.remove('on')},600);
